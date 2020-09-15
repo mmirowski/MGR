@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d6c1846a-d04e-4001-b3f3-936d5a40756f" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1hPRzf8qmshAXb3TWNu0AwhlYN9" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\tmiro\IdeaProjects\mmir\src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Boot JADE">
+    <configuration name="Boot JADE" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="jade.Boot" />
+      <module name="mmir" />
+      <option name="PROGRAM_PARAMETERS" value="-gui -name Mirowski -agents TestAgent:roles.ParkingAgent(40 20 20 1)" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main configuration" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="mmir" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Boot JADE" />
+      <item itemvalue="Application.Main configuration" />
+    </list>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d6c1846a-d04e-4001-b3f3-936d5a40756f" name="Default Changelist" comment="" />
+      <created>1599911004495</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1599911004495</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="-1641" y="85" width="1092" height="680" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599918052859">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1641" y="85" width="1092" height="680" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918052859" />
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1599912614455" />
+    <state x="498" y="196" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1599912610274">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="498" y="196" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1599912610274" />
+    <state x="-1447" y="82" width="538" height="594" key="#xdebugger.evaluate" timestamp="1599918165961">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1447" y="82" key="#xdebugger.evaluate/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918165961" />
+    <state x="378" y="65" width="538" height="594" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1599916903552" />
+    <state x="473" y="153" key="FileChooserDialogImpl" timestamp="1599911078550">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="473" y="153" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1599911078550" />
+    <state width="1493" height="182" key="GridCell.Tab.0.bottom" timestamp="1600165499995">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918693115" />
+    <state width="1493" height="182" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1599920858578" />
+    <state width="1493" height="182" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165499995" />
+    <state width="1493" height="261" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599916842690" />
+    <state width="1493" height="182" key="GridCell.Tab.0.center" timestamp="1600165499995">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1877" height="321" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918693114" />
+    <state width="1493" height="182" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1599920858578" />
+    <state width="1493" height="182" key="GridCell.Tab.0.center/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165499995" />
+    <state width="1493" height="261" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1599916842690" />
+    <state width="1493" height="182" key="GridCell.Tab.0.left" timestamp="1600165499995">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1877" height="321" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918693114" />
+    <state width="1493" height="182" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1599920858578" />
+    <state width="1493" height="182" key="GridCell.Tab.0.left/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165499995" />
+    <state width="1493" height="261" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1599916842690" />
+    <state width="1493" height="182" key="GridCell.Tab.0.right" timestamp="1600165499995">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1877" height="321" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918693114" />
+    <state width="1493" height="182" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1599920858578" />
+    <state width="1493" height="182" key="GridCell.Tab.0.right/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165499995" />
+    <state width="1493" height="261" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1599916842690" />
+    <state width="1877" height="330" key="GridCell.Tab.1.bottom" timestamp="1599918219081">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="330" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918219081" />
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599916845649" />
+    <state width="1877" height="330" key="GridCell.Tab.1.center" timestamp="1599918219081">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="330" key="GridCell.Tab.1.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918219081" />
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1599916845649" />
+    <state width="1877" height="330" key="GridCell.Tab.1.left" timestamp="1599918219081">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="330" key="GridCell.Tab.1.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918219081" />
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1599916845649" />
+    <state width="1877" height="330" key="GridCell.Tab.1.right" timestamp="1599918219081">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="330" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918219081" />
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1599916845649" />
+    <state x="249" y="0" key="SettingsEditor" timestamp="1600165679603">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="0" key="SettingsEditor/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165679603" />
+    <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599911081367" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
