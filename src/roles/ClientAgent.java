@@ -1,16 +1,17 @@
 package roles;
 
-import dtos.FavouritesDto;
-import dtos.RequestDto;
-import dtos.UserDto;
-import dtos.VehicleDto;
+import dtos.*;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
+import jade.lang.acl.ACLMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import utils.Methods;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static utils.Constants.TWENTY_SECONDS;
@@ -21,8 +22,8 @@ import static utils.Constants.TWENTY_SECONDS;
 public class ClientAgent extends Agent {
 
     private UserDto userDto;
-    private List<FavouritesDto> favouritesList;
-    private List<VehicleDto> vehiclesList;
+    private List<FavouritesDto> favouritesList = new LinkedList<>();
+    private List<VehicleDto> vehiclesList = new LinkedList<>();
     private RequestDto requestDto;
 
     protected void setup() {
@@ -110,14 +111,21 @@ public class ClientAgent extends Agent {
         public void action() {
 //            AgentActivitiesLogger agentActivitiesLogger;
 //            agentActivitiesLogger = new AgentActivitiesLogger();
-//
-//            AID receiverAgentID = new AID("Agent02", AID.ISLOCALNAME);
-//            ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
-//            Methods.configureACLMessage(aclMessage, "OpenDoor01Now", receiverAgentID);
-//            aclMessage.setSender(getAID());
-//            aclMessage.setReplyWith("Door01Reply");
-//            send(aclMessage);
-//            messages and all that stuff to the ParkingAgent
+
+            ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
+
+            AID receiverAgentID = new AID("Agent02", AID.ISLOCALNAME);
+            aclMessage.addReceiver(receiverAgentID);
+            aclMessage.setContent("messageContent");
+//          aclMessage.setLanguage(MESSAGE_LANGUAGE);
+            aclMessage.setDefaultEnvelope();
+            //aclMessage.setOntology("I guess I won't be using an ontology");
+            aclMessage.setSender(getAID());
+            aclMessage.setReplyWith("Door01Reply");
+            aclMessage.setContentObject(new BugReportDto());
+            send(aclMessage);
+
+            // messages and all that stuff to the ParkingAgent
         }
     }
 

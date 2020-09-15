@@ -2,30 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6c1846a-d04e-4001-b3f3-936d5a40756f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dtos/BugReportDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dtos/FavouritesDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dtos/OfferDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dtos/ParkingDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dtos/VehicleDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/roles/BankAgent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/roles/ClientAgent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/roles/ServiceAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$InitializeParkingData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$InitializeParkingData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$SayHello.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$TestCyclicBehaviour.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$TestOneShotBeahviour.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/tools/AgentActivitiesLogger.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/tools/AgentActivitiesLogger.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/ChooseFromAvailableParkingContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/messages/ChooseFromAvailableParkingContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/ParkingModel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/UserModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/UserPreferencesModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/RequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dtos/BugReportDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/BugReportDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/roles/BankAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/BankAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/roles/ClientAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ClientAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/roles/ParkingAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ParkingAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/roles/ServiceAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ServiceAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Methods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Methods.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,11 +45,11 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/javamail1_4_4/javamail-1.4.4/mail.jar!/" />
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="Lombok plugin" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -145,9 +129,14 @@
     </state>
     <state x="-1447" y="82" key="#xdebugger.evaluate/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918165961" />
     <state x="378" y="65" width="538" height="594" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1599916903552" />
-    <state x="473" y="153" key="FileChooserDialogImpl" timestamp="1599911078550">
+    <state x="509" y="73" key="DetectedRootsChooserDialog" timestamp="1600197316371">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="509" y="73" key="DetectedRootsChooserDialog/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600197316371" />
+    <state x="473" y="153" key="FileChooserDialogImpl" timestamp="1600197350010">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="473" y="153" key="FileChooserDialogImpl/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600197350010" />
     <state x="473" y="153" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1599911078550" />
     <state width="1493" height="266" key="GridCell.Tab.0.bottom" timestamp="1600183787049">
       <screen x="0" y="0" width="1536" height="824" />
@@ -197,27 +186,27 @@
     </state>
     <state width="1877" height="330" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918219081" />
     <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1599916845649" />
-    <state x="249" y="0" width="1010" height="715" key="SettingsEditor" timestamp="1600184069782">
+    <state x="249" y="0" width="1010" height="715" key="SettingsEditor" timestamp="1600201731184">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="249" y="0" width="1010" height="715" key="SettingsEditor/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600184069782" />
+    <state x="249" y="0" width="1010" height="715" key="SettingsEditor/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600201731184" />
     <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599911081367" />
     <state x="340" y="23" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1600166135613">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="340" y="23" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600166135613" />
-    <state x="399" y="114" width="738" height="596" key="find.popup" timestamp="1600180747926">
+    <state x="399" y="114" width="738" height="596" key="find.popup" timestamp="1600199139512">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="399" y="114" width="738" height="596" key="find.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600180747926" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1600166428904">
+    <state x="399" y="114" width="738" height="596" key="find.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600199139512" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1600195069960">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600166428904" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600183997369">
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600195069960" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600197009117">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600183997369" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600197009117" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

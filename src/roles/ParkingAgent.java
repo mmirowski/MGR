@@ -1,5 +1,6 @@
 package roles;
 
+import dtos.ParkingDto;
 import dtos.RequestDto;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -7,11 +8,11 @@ import jade.core.behaviours.OneShotBehaviour;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import dtos.ParkingDto;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +20,7 @@ import java.util.LinkedList;
 public class ParkingAgent extends Agent {
 
     private ParkingDto parkingDto;
-    private LinkedList<RequestDto> requestsList;
+    private List<RequestDto> requestsList = new LinkedList<>();
 
     // ToDo#2 Ask, why does initialization by GUI gives the System.out.println'es -
     //  and initialization on Main does not?
