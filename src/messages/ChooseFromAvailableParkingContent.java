@@ -1,7 +1,7 @@
 package messages;
 
 import lombok.AllArgsConstructor;
-import models.ParkingModel;
+import dtos.ParkingDto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,14 +9,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ChooseFromAvailableParkingContent implements Serializable {
 
-    private List<ParkingModel> availableParkings;
+    private List<ParkingDto> availableParkings;
 
-    public void addParking(ParkingModel parkingModel) {
-        availableParkings.add(parkingModel);
+    public void addParking(ParkingDto parkingDto) {
+        availableParkings.add(parkingDto);
     }
 
-    public void removeParking(ParkingModel parkingModel) {
-        int parkingModelIndex = availableParkings.indexOf(parkingModel);
+    public void removeParking(ParkingDto parkingDto) {
+        int parkingModelIndex = availableParkings.indexOf(parkingDto);
         availableParkings.remove(parkingModelIndex);
     }
 

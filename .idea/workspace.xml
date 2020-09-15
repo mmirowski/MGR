@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6c1846a-d04e-4001-b3f3-936d5a40756f" name="Default Changelist" comment="" />
+    <list default="true" id="d6c1846a-d04e-4001-b3f3-936d5a40756f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dtos/BugReportDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dtos/FavouritesDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dtos/OfferDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dtos/ParkingDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dtos/VehicleDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/roles/BankAgent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/roles/ClientAgent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/roles/ServiceAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/mmir/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$InitializeParkingData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$InitializeParkingData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$SayHello.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$TestCyclicBehaviour.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$TestOneShotBeahviour.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/mmir/tools/AgentActivitiesLogger.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/tools/AgentActivitiesLogger.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/messages/ChooseFromAvailableParkingContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/messages/ChooseFromAvailableParkingContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/ParkingModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/UserModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/UserPreferencesModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/RequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/roles/ParkingAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ParkingAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,10 +42,16 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1hPRzf8qmshAXb3TWNu0AwhlYN9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -29,13 +60,17 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
+    <property name="settings.editor.selected.configurable" value="Lombok plugin" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="dtos" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\tmiro\IdeaProjects\mmir\src" />
     </key>
@@ -44,7 +79,7 @@
     <configuration name="Boot JADE" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="jade.Boot" />
       <module name="mmir" />
-      <option name="PROGRAM_PARAMETERS" value="-gui -name Mirowski -agents TestAgent:roles.ParkingAgent(40 20 20 1)" />
+      <option name="PROGRAM_PARAMETERS" value="-gui -name Mirowski -agents TestAgent:roles.ParkingAgent(40 20 20 1 true true true)" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -87,15 +122,24 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1641" y="85" width="1092" height="680" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599918052859">
-      <screen x="-1920" y="0" width="1920" height="1040" />
+    <state x="361" y="70" key="#Notifications" timestamp="1600183953033">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="70" key="#Notifications/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600183953033" />
+    <state x="223" y="67" width="1092" height="680" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600183785225">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="-1641" y="85" width="1092" height="680" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918052859" />
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600183785225" />
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1599912614455" />
     <state x="498" y="196" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1599912610274">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="498" y="196" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1599912610274" />
+    <state x="491" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1600173073769">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="491" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600173073769" />
     <state x="-1447" y="82" width="538" height="594" key="#xdebugger.evaluate" timestamp="1599918165961">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
@@ -105,33 +149,33 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="473" y="153" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1599911078550" />
-    <state width="1493" height="182" key="GridCell.Tab.0.bottom" timestamp="1600165499995">
+    <state width="1493" height="266" key="GridCell.Tab.0.bottom" timestamp="1600183787049">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="321" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918693115" />
     <state width="1493" height="182" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1599920858578" />
-    <state width="1493" height="182" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165499995" />
+    <state width="1493" height="266" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600183787049" />
     <state width="1493" height="261" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599916842690" />
-    <state width="1493" height="182" key="GridCell.Tab.0.center" timestamp="1600165499995">
+    <state width="1493" height="266" key="GridCell.Tab.0.center" timestamp="1600183787049">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="321" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918693114" />
     <state width="1493" height="182" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1599920858578" />
-    <state width="1493" height="182" key="GridCell.Tab.0.center/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165499995" />
+    <state width="1493" height="266" key="GridCell.Tab.0.center/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600183787049" />
     <state width="1493" height="261" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1599916842690" />
-    <state width="1493" height="182" key="GridCell.Tab.0.left" timestamp="1600165499995">
+    <state width="1493" height="266" key="GridCell.Tab.0.left" timestamp="1600183787049">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="321" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918693114" />
     <state width="1493" height="182" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1599920858578" />
-    <state width="1493" height="182" key="GridCell.Tab.0.left/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165499995" />
+    <state width="1493" height="266" key="GridCell.Tab.0.left/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600183787049" />
     <state width="1493" height="261" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1599916842690" />
-    <state width="1493" height="182" key="GridCell.Tab.0.right" timestamp="1600165499995">
+    <state width="1493" height="266" key="GridCell.Tab.0.right" timestamp="1600183787049">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="321" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918693114" />
     <state width="1493" height="182" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1599920858578" />
-    <state width="1493" height="182" key="GridCell.Tab.0.right/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165499995" />
+    <state width="1493" height="266" key="GridCell.Tab.0.right/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600183787049" />
     <state width="1493" height="261" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1599916842690" />
     <state width="1877" height="330" key="GridCell.Tab.1.bottom" timestamp="1599918219081">
       <screen x="-1920" y="0" width="1920" height="1040" />
@@ -153,23 +197,39 @@
     </state>
     <state width="1877" height="330" key="GridCell.Tab.1.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1599918219081" />
     <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1599916845649" />
-    <state x="249" y="0" key="SettingsEditor" timestamp="1600165679603">
+    <state x="249" y="0" width="1010" height="715" key="SettingsEditor" timestamp="1600184069782">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="249" y="0" key="SettingsEditor/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600165679603" />
+    <state x="249" y="0" width="1010" height="715" key="SettingsEditor/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600184069782" />
     <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1599911081367" />
+    <state x="340" y="23" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1600166135613">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="340" y="23" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600166135613" />
+    <state x="399" y="114" width="738" height="596" key="find.popup" timestamp="1600180747926">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="399" y="114" width="738" height="596" key="find.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600180747926" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1600166428904">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600166428904" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600183997369">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600183997369" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>25</line>
+          <line>24</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>24</line>
+          <line>23</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
