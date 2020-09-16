@@ -9,7 +9,6 @@ import jade.lang.acl.ACLMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import utils.Methods;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +44,8 @@ public class ClientAgent extends Agent {
         addBehaviour(new SendRequest());
         addBehaviour(new JoinAuction());
         addBehaviour(new ListenForOffers());
+        // AcceptOffer behaviour should contain inside it's logic diminishing Client funds by the amount of money
+        // agreed during the Auction - this will simulate "real" payment process
         addBehaviour(new AcceptOffer());
         addBehaviour(new Park());
         addBehaviour(new Leave());
@@ -109,15 +110,12 @@ public class ClientAgent extends Agent {
 
     private class SendRequest extends OneShotBehaviour {
         public void action() {
-//            AgentActivitiesLogger agentActivitiesLogger;
-//            agentActivitiesLogger = new AgentActivitiesLogger();
-
             ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
 
             AID receiverAgentID = new AID("Agent02", AID.ISLOCALNAME);
             aclMessage.addReceiver(receiverAgentID);
             aclMessage.setContent("messageContent");
-//          aclMessage.setLanguage(MESSAGE_LANGUAGE);
+            // aclMessage.setLanguage(MESSAGE_LANGUAGE);
             aclMessage.setDefaultEnvelope();
             //aclMessage.setOntology("I guess I won't be using an ontology");
             aclMessage.setSender(getAID());

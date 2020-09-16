@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6c1846a-d04e-4001-b3f3-936d5a40756f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Mirowski.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/CheckParkingLotsAvailabilityContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/CheckParkingLotsAvailabilityContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/CheckParkingPositionContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/CheckParkingPositionContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/ChooseFromAvailableParkingContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/ChooseFromAvailableParkingContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/FindFreeParkingLotsContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/FindFreeParkingLotsContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/messages/MakeReservationContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/templates/MakeReservationContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dtos/OfferDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/OfferDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dtos/RequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/RequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/roles/BankAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/BankAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/roles/ClientAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ClientAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/roles/ServiceAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ServiceAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/AgentActivitiesLogger.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Methods.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,23 +213,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600195069960" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600197009117">
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1600275411359">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600197009117" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.8.1920.1040@0.0.1536.824" timestamp="1600275411359" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>24</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="3" />
+          <line>35</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

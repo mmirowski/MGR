@@ -1,6 +1,7 @@
 package roles;
 
 import dtos.BugReportDto;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.FSMBehaviour;
@@ -34,7 +35,8 @@ public class ServiceAgent extends Agent {
     private List<BugReportDto> bugReports = new LinkedList<>();
 
     protected void setup() {
-        System.out.println("Agent " + getAID().getName() + " is ready to work.");
+        AID serviceAgentID = getAID();
+        System.out.println("Agent " + serviceAgentID.getName() + " is ready to work.");
         setBehavioursQueue();
     }
 
@@ -43,7 +45,7 @@ public class ServiceAgent extends Agent {
         //  implementation work - especially when application will be used for business purposes
 
         // ToDo#7 Ask about the transitions logic - is there any way to make an infinite loop between listening and
-        //  porcessing?
+        //  processing?
         FSMBehaviour fsmBehaviour = new FSMBehaviour(this);
         fsmBehaviour.registerFirstState(new SayHello(), Constants.INITIAL_STATE);
         fsmBehaviour.registerState(new ListenForBugReports(), Constants.STATE_A);
@@ -73,15 +75,16 @@ public class ServiceAgent extends Agent {
             ACLMessage message = receive(bugReportMessage);
             // ToDo#9 Ask, whether the performatives were well understood
             ACLMessage reply = message.createReply();
+            Date date = new Date();
             if (message != null) {
                 try {
                     bugReports.add((BugReportDto) message.getContentObject());
                     reply.setPerformative(ACLMessage.AGREE);
-                    reply.setContent(Constants.MESSAGE_SENT_SUCCESSFULLY);
+                    reply.setContent(date + Constants.MESSAGE_SENT_SUCCESSFULLY);
                     send(reply);
                 } catch (UnreadableException e) {
                     reply.setPerformative(ACLMessage.FAILURE);
-                    reply.setContent(Constants.MESSAGE_NOT_SENT);
+                    reply.setContent(date + Constants.MESSAGE_NOT_SENT);
                     send(reply);
                     e.printStackTrace();
                 }

@@ -1,5 +1,6 @@
 package dtos;
 
+import jade.core.AID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RequestDto {
 
+    private AID client;
     private double destinationXCoordinate;
     private double destinationYCoordinate;
     private double maxDistanceFromDestination;

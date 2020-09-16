@@ -3,7 +3,9 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
+import utils.Constants;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,9 +22,18 @@ public class Main {
         Object[] object = new Object[]{50.23, 41.902, 50, 40, true, true, false};
         ContainerController containerController = runtime.createMainContainer(p);
         try {
-            AgentController testAgent = containerController.createNewAgent("PA02", "roles.ParkingAgent", object);
-            testAgent.getState();
-            System.out.println("Log");
+            AgentController serviceAgent = containerController.createNewAgent(Constants.SERVICE_AGENT_NICKNAME,
+                    Constants.SERVICE_AGENT_CLASS_NAME, null);
+            System.out.println("This is a dummy text before agents activation");
+            serviceAgent.activate();
+
+            for (int i = 0; i < 3; i++) {
+                AgentController parkingAgent = containerController.createNewAgent(Constants.PARKING_AGENT_NICKNAME + i,
+                        Constants.PARKING_AGENT_CLASS_NAME, object);
+                parkingAgent.getState();
+            }
+
+            System.out.println("This is another placeholder.");
         } catch (StaleProxyException e) {
             e.printStackTrace();
         }
