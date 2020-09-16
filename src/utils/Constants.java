@@ -10,5 +10,7 @@ public final class Constants {
     public static final String MAS_SERVICES_CONTACT_EMAIL = "masservice@tempmail.com";
     public static final String MAIL_SETUP_PROPERTY = "mail.smtp.host";
     public static final String LOCALHOST = "localhost";
+    public static final String MESSAGE_SENT_SUCCESSFULLY = "Your message was sent successfully.";
+    public static final String MESSAGE_NOT_SENT = "An error occurred: Your message was not sent.";
     public static final int TWENTY_SECONDS = 20000;
 }

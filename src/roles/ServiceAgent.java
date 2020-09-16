@@ -6,6 +6,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -67,14 +68,25 @@ public class ServiceAgent extends Agent {
 
     private class ListenForBugReports extends CyclicBehaviour {
         public void action() {
-            ACLMessage message = receive();
+            // Agent sending bug report asks Service Agent to perform an action: pass bug info to IT Services
+            MessageTemplate bugReportMessage = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+            ACLMessage message = receive(bugReportMessage);
+            // ToDo#9 Ask, whether the performatives were well understood
+            ACLMessage reply = message.createReply();
             if (message != null) {
                 try {
-                    // ToDo#8 Finish implementing that Agent
-                    message.getContentObject();
+                    bugReports.add((BugReportDto) message.getContentObject());
+                    reply.setPerformative(ACLMessage.AGREE);
+                    reply.setContent(Constants.MESSAGE_SENT_SUCCESSFULLY);
+                    send(reply);
                 } catch (UnreadableException e) {
+                    reply.setPerformative(ACLMessage.FAILURE);
+                    reply.setContent(Constants.MESSAGE_NOT_SENT);
+                    send(reply);
                     e.printStackTrace();
                 }
+            } else {
+                block();
             }
         }
     }
