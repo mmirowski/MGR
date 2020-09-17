@@ -1,43 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6c1846a-d04e-4001-b3f3-936d5a40756f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/genericBehaviours/ReportBug.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/genericBehaviours/TerminateAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/dtos/BugReportDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/dtos/BugReportDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/dtos/RequestDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/dtos/RequestDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/dtos/VehicleDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/mmir/dtos/VehicleDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/messages/CheckParkingLotsAvailabilityContent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/messages/CheckParkingPositionContent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/messages/ChooseFromAvailableParkingContent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/messages/FindFreeParkingLotsContent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/messages/MakeReservationContent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/BankAgent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ClientAgent$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ClientAgent$InitializeUser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ClientAgent$ManageAccount.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ClientAgent$PresentUser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ClientAgent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$InitializeParkingData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$ObtainRequests.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$PresentParkingParameters.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent$TerminateAgent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ParkingAgent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/roles/ServiceAgent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/tools/AgentActivitiesLogger.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/utils/Constants.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/mmir/utils/Methods.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dtos/OfferDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/OfferDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dtos/RequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dtos/RequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/roles/BankAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/BankAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/roles/ClientAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ClientAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/roles/ParkingAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ParkingAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/roles/ServiceAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/roles/ServiceAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
-    </list>
+    <list default="true" id="d6c1846a-d04e-4001-b3f3-936d5a40756f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,6 +34,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/javamail1_4_4/javamail-1.4.4/mail.jar!/" />
