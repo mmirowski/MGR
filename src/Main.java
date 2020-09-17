@@ -3,7 +3,6 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
-import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 import utils.Constants;
 
@@ -11,9 +10,6 @@ public class Main {
     public static void main(String[] args) {
 //        long seed = new Date().getTime();
 //        Random generator = new Random(seed);
-
-        System.out.println("Please, enter parking's configuration parameters in the following order: x " +
-                "coordinate, y coordinate, maximum capacity, free spaces. Split numbers with comma.");
 
         Runtime runtime = Runtime.instance();
         Profile p = new ProfileImpl();

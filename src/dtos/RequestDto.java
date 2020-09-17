@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
-public class RequestDto {
+public class RequestDto implements Serializable {
 
     private AID client;
     private double destinationXCoordinate;

@@ -1,5 +1,7 @@
 package roles;
 
+import genericBehaviours.ReportBug;
+import genericBehaviours.TerminateAgent;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -11,7 +13,6 @@ import lombok.Getter;
 import lombok.Setter;
 import utils.Constants;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -84,6 +85,7 @@ public class BankAgent extends Agent {
                 addBehaviour(new ReportBug());
             }
 
+            System.out.println("Bank is now unavailable");
             addBehaviour(new TerminateAgent());
         }
     }
@@ -97,31 +99,5 @@ public class BankAgent extends Agent {
         paymentReminder.setSender(getAID());
         paymentReminder.setDefaultEnvelope();
         return paymentReminder;
-    }
-
-    private class ReportBug extends OneShotBehaviour {
-        public void action() {
-            ACLMessage bugReport = new ACLMessage(ACLMessage.REQUEST);
-            Date date = new Date();
-            // ToDo#10 Ask, how to get ServiceAgent's AID to put it here - as a constant bug reports receiver.
-            bugReport.addReceiver();
-            bugReport.setLanguage(Constants.MESSAGE_LANGUAGE);
-            bugReport.setContent(date + Constants.BUG_REPORT_MESSAGE_CONTENT);
-            // paymentReminder.setOntology("I guess I won't be using an ontology");
-            bugReport.setSender(getAID());
-            bugReport.setDefaultEnvelope();
-            send(bugReport);
-        }
-    }
-
-    private class TerminateAgent extends OneShotBehaviour {
-        public void action() {
-            doDelete();
-        }
-    }
-
-    protected void takeDown() {
-        System.out.println("Agent " + getLocalName() + " has done his work and is going to be turned off.");
-        System.out.println("Bank is now unavailable");
     }
 }

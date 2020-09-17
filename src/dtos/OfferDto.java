@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OfferDto {
 
-    private AID client;
+    private AID parkingAID;
     private double parkingXCoordinate;
     private double parkingYCoordinate;
     private double distanceFromDestination;

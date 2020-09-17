@@ -27,7 +27,10 @@ public final class Constants {
     public static final String MESSAGE_SENT_SUCCESSFULLY = "Your message was sent successfully.";
     public static final String MESSAGE_NOT_SENT = "An error occurred: Your message was not sent.";
     public static final String BUG_REPORT_MESSAGE_CONTENT = "Sample bug report message content.";
+    public static final String CALL_FOR_PROPOSAL_CONTENT = "Call for proposal - Client is looking for a Parking.";
     public static final String PAYMENT_REMINDER_MESSAGE = "This is a payment reminder message.";
+    public static final String CLIENT_IS_LEAVING_MESSAGE = "Client is leaving a parking spot.";
+    public static final String CLIENT_IS_STAYING_MESSAGE = "Client is staying.";
 
     public static final int TWENTY_SECONDS = 20000;
 }

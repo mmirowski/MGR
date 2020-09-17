@@ -1,10 +1,15 @@
 package roles;
 
+import genericBehaviours.ReportBug;
+import genericBehaviours.TerminateAgent;
 import dtos.ParkingDto;
 import dtos.RequestDto;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,10 +45,13 @@ public class ParkingAgent extends Agent {
             addBehaviour(new ObtainAuctionResults());
         }
 
+        // Inside the SendOffers behaviour ParkingAgent should pass also his AID - to make further communication
+        // possible for the ClientAgent
         addBehaviour(new SendOffers());
         // update freeSpaces
         // check Clients positions and sensors data
         addBehaviour(new ConfirmClientIsStaying());
+        addBehaviour(new ConfirmClientIsLeaving());
         addBehaviour(new ReportBug());
         addBehaviour(new TerminateAgent());
     }
@@ -110,20 +118,20 @@ public class ParkingAgent extends Agent {
 
     private class ObtainRequests extends CyclicBehaviour {
         public void action() {
-            System.out.println("Sth");
-            // doSomething
-            // wait for the request from teh Client
-        }
-        // done() always returns false in CyclicBehaviours - have to use block()
-    }
+            // ParkingAgent listening for calls for proposals from ClientAgents
+            MessageTemplate clientCFPTemplate = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+            ACLMessage clientCFP = receive(clientCFPTemplate);
+            if (clientCFP != null) {
+                // This will probably go to trash
+                try {
+                    requestsList.add((RequestDto) clientCFP.getContentObject());
+                } catch (UnreadableException e) {
+                    e.printStackTrace();
+                }
 
-    private class TerminateAgent extends OneShotBehaviour {
-        public void action() {
-            doDelete();
+            } else {
+                block();
+            }
         }
-    }
-
-    protected void takeDown() {
-        System.out.println("Agent " + getLocalName() + " has done his work and is going to be turned off.");
     }
 }

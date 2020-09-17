@@ -1,5 +1,6 @@
 package roles;
 
+import genericBehaviours.TerminateAgent;
 import dtos.BugReportDto;
 import jade.core.AID;
 import jade.core.Agent;
@@ -126,16 +127,5 @@ public class ServiceAgent extends Agent {
                 .append(element.getBugReporter());
         message.setDescription(stringBuilder.toString());
         Transport.send(message);
-    }
-
-    private class TerminateAgent extends OneShotBehaviour {
-        public void action() {
-            doDelete();
-        }
-    }
-
-    protected void takeDown() {
-        System.out.println("Agent " + getLocalName() + " has done his work and is going to be turned off.");
-        System.out.println("Service is now unavailable");
     }
 }
