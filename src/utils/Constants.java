@@ -12,6 +12,11 @@ public final class Constants {
     public static final String PARKING_AGENT_CLASS_NAME = "roles.ParkingAgent";
     public static final String CLIENT_AGENT_CLASS_NAME = "roles.ClientAgent";
 
+    public static final String SERVICE_AGENT_TYPE = "Service";
+    public static final String BANK_AGENT_CLASS_TYPE = "Bank";
+    public static final String PARKING_AGENT_CLASS_TYPE = "Parking";
+    public static final String CLIENT_AGENT_CLASS_TYPE = "Client";
+
     public static final String MESSAGE_LANGUAGE = "English";
 
     public static final String INITIAL_STATE = "State 0";
@@ -31,6 +36,9 @@ public final class Constants {
     public static final String PAYMENT_REMINDER_MESSAGE = "This is a payment reminder message.";
     public static final String CLIENT_IS_LEAVING_MESSAGE = "Client is leaving a parking spot.";
     public static final String CLIENT_IS_STAYING_MESSAGE = "Client is staying.";
+
+    public static final String BUG_REPORT_MESSAGE_PROTOCOL = "Bug report";
+    public static final String REQUEST_FOR_PARKING_SPACE = "Call for proposal";
 
     public static final int TWENTY_SECONDS = 20000;
 }

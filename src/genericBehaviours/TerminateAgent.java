@@ -1,6 +1,7 @@
 package genericBehaviours;
 
 import jade.core.behaviours.OneShotBehaviour;
+import jade.domain.DFService;
 
 public class TerminateAgent extends OneShotBehaviour {
     public void action() {
@@ -8,7 +9,12 @@ public class TerminateAgent extends OneShotBehaviour {
     }
 
     protected void takeDown() {
-        System.out.println("Agent " + myAgent.getLocalName() + " has done his work and is going to be turned off.");
+        try {
+            DFService.deregister(myAgent);
+            System.out.println("Agent " + myAgent.getLocalName() + " has done his work and is going to be turned off.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

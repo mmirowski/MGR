@@ -1,6 +1,5 @@
 package dtos;
 
-import jade.core.AID;
 import lombok.Getter;
 import lombok.Setter;
 

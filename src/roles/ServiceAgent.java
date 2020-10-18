@@ -7,6 +7,10 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -37,16 +41,32 @@ public class ServiceAgent extends Agent {
 
     protected void setup() {
         AID serviceAgentID = getAID();
+        registerWithinDF(serviceAgentID);
         System.out.println("Agent " + serviceAgentID.getName() + " is ready to work.");
         setBehavioursQueue();
+    }
+
+    private void registerWithinDF(AID serviceAgentID) {
+        // To register an Agent in the Directory Facilitator, Service Description is performed
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setType(Constants.SERVICE_AGENT_NICKNAME);
+        serviceDescription.setName(Constants.SERVICE_AGENT_TYPE);
+
+        DFAgentDescription dfServiceAgentDescription = new DFAgentDescription();
+        dfServiceAgentDescription.setName(serviceAgentID);
+        dfServiceAgentDescription.addServices(serviceDescription);
+
+        // Try performing registering action
+        try {
+            DFService.register(this, dfServiceAgentDescription);
+        } catch (FIPAException exception) {
+            exception.printStackTrace();
+        }
     }
 
     private void setBehavioursQueue() {
         // ToDo#6 User verification and vehicles checking behaviours should be added here during further
         //  implementation work - especially when application will be used for business purposes
-
-        // ToDo#7 Ask about the transitions logic - is there any way to make an infinite loop between listening and
-        //  processing?
         FSMBehaviour fsmBehaviour = new FSMBehaviour(this);
         fsmBehaviour.registerFirstState(new SayHello(), Constants.INITIAL_STATE);
         fsmBehaviour.registerState(new ListenForBugReports(), Constants.STATE_A);
@@ -72,9 +92,9 @@ public class ServiceAgent extends Agent {
     private class ListenForBugReports extends CyclicBehaviour {
         public void action() {
             // Agent sending bug report asks Service Agent to perform an action: pass bug info to IT Services
-            MessageTemplate bugReportMessage = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+            MessageTemplate bugReportMessage = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+                    MessageTemplate.MatchProtocol(Constants.BUG_REPORT_MESSAGE_PROTOCOL));
             ACLMessage message = receive(bugReportMessage);
-            // ToDo#9 Ask, whether the performatives were well understood
             ACLMessage reply = message.createReply();
             Date date = new Date();
             if (message != null) {

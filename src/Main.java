@@ -11,6 +11,10 @@ public class Main {
 //        long seed = new Date().getTime();
 //        Random generator = new Random(seed);
 
+        // Let's make here a DF Agent. - 18.10 not valid anymore. There is one static, global DF
+        // Then create agents - and make DFA be aware of 'em.
+        // After that
+
         Runtime runtime = Runtime.instance();
         Profile p = new ProfileImpl();
         p.setParameter(Profile.MAIN_HOST, "localhost");

@@ -1,18 +1,24 @@
 package roles;
 
-import genericBehaviours.ReportBug;
-import genericBehaviours.TerminateAgent;
 import dtos.ParkingDto;
 import dtos.RequestDto;
+import genericBehaviours.ReportBug;
+import genericBehaviours.TerminateAgent;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,11 +33,29 @@ public class ParkingAgent extends Agent {
     private ParkingDto parkingDto;
     private List<RequestDto> requestsList = new LinkedList<>();
 
-    // ToDo#2 Ask, why does initialization by GUI gives the System.out.println'es -
-    //  and initialization on Main does not?
     protected void setup() {
-        System.out.println("Agent " + getAID().getName() + " is ready to work.");
+        AID parkingAgentID = getAID();
+        registerWithinDF(parkingAgentID);
+        System.out.println("Agent " + parkingAgentID.getName() + " is ready to work.");
         setBehavioursQueue();
+    }
+
+    private void registerWithinDF(AID parkingAgentID) {
+        // To register an Agent in the Directory Facilitator, Service Description is performed
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setType(Constants.PARKING_AGENT_CLASS_TYPE);
+        serviceDescription.setName(Constants.PARKING_AGENT_NICKNAME);
+
+        DFAgentDescription dfParkingAgentDescription = new DFAgentDescription();
+        dfParkingAgentDescription.setName(parkingAgentID);
+        dfParkingAgentDescription.addServices(serviceDescription);
+
+        // Try performing registering action
+        try {
+            DFService.register(this, dfParkingAgentDescription);
+        } catch (FIPAException exception) {
+            exception.printStackTrace();
+        }
     }
 
     private void setBehavioursQueue() {
@@ -119,19 +143,20 @@ public class ParkingAgent extends Agent {
     private class ObtainRequests extends CyclicBehaviour {
         public void action() {
             // ParkingAgent listening for calls for proposals from ClientAgents
-            MessageTemplate clientCFPTemplate = MessageTemplate.MatchPerformative(ACLMessage.CFP);
+            MessageTemplate clientCFPTemplate = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.CFP),
+                    MessageTemplate.MatchProtocol(Constants.REQUEST_FOR_PARKING_SPACE));
             ACLMessage clientCFP = receive(clientCFPTemplate);
+
             if (clientCFP != null) {
-                // This will probably go to trash
                 try {
                     requestsList.add((RequestDto) clientCFP.getContentObject());
                 } catch (UnreadableException e) {
                     e.printStackTrace();
                 }
-
             } else {
                 block();
             }
+
         }
     }
 }

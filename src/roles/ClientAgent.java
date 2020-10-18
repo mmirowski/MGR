@@ -1,14 +1,16 @@
 package roles;
 
+import dtos.*;
 import genericBehaviours.ReportBug;
 import genericBehaviours.TerminateAgent;
-import dtos.FavouritesDto;
-import dtos.RequestDto;
-import dtos.UserDto;
-import dtos.VehicleDto;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,10 +32,31 @@ public class ClientAgent extends Agent {
     private List<FavouritesDto> favouritesList = new LinkedList<>();
     private List<VehicleDto> vehiclesList = new LinkedList<>();
     private RequestDto requestDto;
+    private OfferDto offerDto;
 
     protected void setup() {
-        System.out.println("Agent " + getAID().getName() + " is ready to work.");
+        AID clientAgentID = getAID();
+        registerWithinDF(clientAgentID);
+        System.out.println("Agent " + clientAgentID.getName() + " is ready to work.");
         setBehavioursQueue();
+    }
+
+    private void registerWithinDF(AID clientAgentID) {
+        // To register an Agent in the Directory Facilitator, Service Description is performed
+        ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setType(Constants.CLIENT_AGENT_CLASS_TYPE);
+        serviceDescription.setName(Constants.CLIENT_AGENT_NICKNAME);
+
+        DFAgentDescription dfServiceAgentDescription = new DFAgentDescription();
+        dfServiceAgentDescription.setName(clientAgentID);
+        dfServiceAgentDescription.addServices(serviceDescription);
+
+        // Try performing registering action
+        try {
+            DFService.register(this, dfServiceAgentDescription);
+        } catch (FIPAException exception) {
+            exception.printStackTrace();
+        }
     }
 
     private void setBehavioursQueue() {
@@ -87,7 +110,7 @@ public class ClientAgent extends Agent {
 
     private class ManageAccount extends OneShotBehaviour {
         public void action() {
-            // ToDo#4 ask, if there is any way to stop application run - to insert values for the favourites /
+            // ToDo#4 During further implementation work stop application run to insert values for the favourites /
             //  vehicles form in the User profile
             System.out.println("Client's Favourites could be set here (using favouritesList).");
             System.out.println("Also, Client's Vehicles could be configured here (using vehiclesList).");
@@ -127,8 +150,8 @@ public class ClientAgent extends Agent {
             aclMessage.addReceiver();
 
             aclMessage.setContent(Constants.CALL_FOR_PROPOSAL_CONTENT);
-             aclMessage.setLanguage(Constants.MESSAGE_LANGUAGE);
-            //aclMessage.setOntology("I guess I won't be using an ontology");
+            aclMessage.setLanguage(Constants.MESSAGE_LANGUAGE);
+            // aclMessage.setOntology("I guess I won't be using an ontology");
             aclMessage.setSender(getAID());
             aclMessage.setReplyWith(getAID().getName());
 
@@ -143,9 +166,23 @@ public class ClientAgent extends Agent {
         }
     }
 
+    // Think about this method twice ...
+//    private class AcceptOffer extends OneShotBehaviour {
+//        public void action() {
+//            double funds = userDto.getMoney();
+//            double price = offerDto.getPrice();
+//            if ((funds - price) >= 0) {
+//                userDto.setMoney(funds - price);
+//
+//            } else {
+//                addBehaviour(new TerminateAgent());
+//            }
+//        }
+//    }
+
     private class Park extends OneShotBehaviour {
         public void action() {
-            // ClientAgent is leaving parking spot and sends request to ParkingAgent to update free spaces
+            // ClientAgent is taking parking spot and sends request to ParkingAgent to update free spaces
             ACLMessage stayNote = prepareMessageToParkingAgent();
             stayNote.setContent(Constants.CLIENT_IS_STAYING_MESSAGE);
             send(stayNote);
