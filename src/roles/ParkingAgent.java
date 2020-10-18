@@ -65,6 +65,9 @@ public class ParkingAgent extends Agent {
 
         // Requests' handling
         if (requestsList != null && checkIfAuctionIsNeeded()) {
+            // Within this method I will have to use:
+//            MessageTemplate auctionRequest = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+//                    MessageTemplate.MatchProtocol(Constants.CALL_FOR_AN_AUCTION));
             addBehaviour(new ExchangeDataWithBank());
             addBehaviour(new ObtainAuctionResults());
         }
@@ -159,4 +162,21 @@ public class ParkingAgent extends Agent {
 
         }
     }
+
+    private class ListenForFinalConfirmation extends CyclicBehaviour {
+        public void action() {
+            // #ToDo#n Refactor this whole method, it is written wrong!
+            MessageTemplate auctionRequest = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+                    MessageTemplate.MatchProtocol(Constants.CALL_FOR_AN_AUCTION));
+            ACLMessage parkingManagerMessage = receive(auctionRequest);
+            if (parkingManagerMessage != null) {
+
+
+
+            } else {
+                block();
+            }
+        }
+    }
+
 }

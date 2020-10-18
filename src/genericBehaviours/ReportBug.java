@@ -28,7 +28,7 @@ public class ReportBug extends OneShotBehaviour {
     private List<DFAgentDescription> getListOfServiceAgents(List<DFAgentDescription> serviceAgents) {
         DFAgentDescription dfAgentDescription = new DFAgentDescription();
         ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.setType(Constants.SERVICE_AGENT_TYPE);
+        serviceDescription.setType(Constants.SERVICE_AGENT_CLASS_TYPE);
         dfAgentDescription.addServices(serviceDescription);
 
         try {
@@ -46,7 +46,7 @@ public class ReportBug extends OneShotBehaviour {
         bugReport.setLanguage(Constants.MESSAGE_LANGUAGE);
         bugReport.setProtocol(Constants.BUG_REPORT_MESSAGE_PROTOCOL);
         bugReport.setContent(date + Constants.BUG_REPORT_MESSAGE_CONTENT);
-        // paymentReminder.setOntology("I guess I won't be using an ontology");
+        // bugReport.setOntology("I guess I won't be using an ontology");
         bugReport.setSender(myAgent.getAID());
         bugReport.setDefaultEnvelope();
         return bugReport;

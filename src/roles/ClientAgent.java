@@ -75,6 +75,7 @@ public class ClientAgent extends Agent {
         addBehaviour(new JoinAuction());
         // AcceptOffer behaviour should contain inside it's logic diminishing Client funds by the amount of money
         // agreed during the Auction - this will simulate "real" payment process
+        addBehaviour(new ReceiveOffer());
         addBehaviour(new AcceptOffer());
         addBehaviour(new Park());
         addBehaviour(new Leave());
@@ -166,19 +167,22 @@ public class ClientAgent extends Agent {
         }
     }
 
-    // Think about this method twice ...
-//    private class AcceptOffer extends OneShotBehaviour {
-//        public void action() {
-//            double funds = userDto.getMoney();
-//            double price = offerDto.getPrice();
-//            if ((funds - price) >= 0) {
-//                userDto.setMoney(funds - price);
-//
-//            } else {
-//                addBehaviour(new TerminateAgent());
-//            }
-//        }
-//    }
+    //     Think about this method twice ...
+    private class AcceptOffer extends OneShotBehaviour {
+        public void action() {
+            double funds = userDto.getMoney();
+            double price = offerDto.getPrice();
+            if ((funds - price) >= 0) {
+                userDto.setMoney(funds - price);
+
+
+                // Also, somewhere here a message to both: the Parking and Bank Agents should be sent,
+                //  informing about the final Client decision
+            } else {
+                addBehaviour(new TerminateAgent());
+            }
+        }
+    }
 
     private class Park extends OneShotBehaviour {
         public void action() {

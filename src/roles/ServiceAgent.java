@@ -49,8 +49,8 @@ public class ServiceAgent extends Agent {
     private void registerWithinDF(AID serviceAgentID) {
         // To register an Agent in the Directory Facilitator, Service Description is performed
         ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.setType(Constants.SERVICE_AGENT_NICKNAME);
-        serviceDescription.setName(Constants.SERVICE_AGENT_TYPE);
+        serviceDescription.setType(Constants.SERVICE_AGENT_CLASS_TYPE);
+        serviceDescription.setName(Constants.SERVICE_AGENT_NICKNAME);
 
         DFAgentDescription dfServiceAgentDescription = new DFAgentDescription();
         dfServiceAgentDescription.setName(serviceAgentID);
