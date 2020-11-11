@@ -45,4 +45,5 @@ public final class Constants {
     public static final String CALL_FOR_FINAL_DECISION = "Call for final decision: accept or deny parking space reservation";
 
     public static final int TWENTY_SECONDS = 20000;
+    public static final String PATH_TO_SURVEY_RESPONSES_FILE = "src/usersResponses.txt";
 }

@@ -1,4 +1,4 @@
-package roles;
+package agents;
 
 import dtos.*;
 import genericBehaviours.ReportBug;
@@ -71,11 +71,11 @@ public class ClientAgent extends Agent {
         });
         addBehaviour(new PrepareRequest());
         addBehaviour(new SendRequest());
-        addBehaviour(new ListenForOffers());
-        addBehaviour(new JoinAuction());
+//        addBehaviour(new ListenForOffers());
+//        addBehaviour(new JoinAuction());
         // AcceptOffer behaviour should contain inside it's logic diminishing Client funds by the amount of money
         // agreed during the Auction - this will simulate "real" payment process
-        addBehaviour(new ReceiveOffer());
+//        addBehaviour(new ReceiveOffer());
         addBehaviour(new AcceptOffer());
         addBehaviour(new Park());
         addBehaviour(new Leave());
@@ -120,8 +120,8 @@ public class ClientAgent extends Agent {
 
     private void updateUserPosition() {
         // ToDo#3 pass values read from the Google Maps GPS - right now dummy ones are inserted
-        userDto.setUserXCoordinate();
-        userDto.setUserYCoordinate();
+//        userDto.setUserXCoordinate();
+//        userDto.setUserYCoordinate();
     }
 
     private class PrepareRequest extends OneShotBehaviour {
@@ -129,13 +129,13 @@ public class ClientAgent extends Agent {
             // ToDo#5 get input from User considering parking position and parameters ... - so essentially the same
             //  as in #4
             requestDto.setClient(getAID());
-            requestDto.setDestinationXCoordinate();
-            requestDto.setDestinationYCoordinate();
-            requestDto.setMaxDistanceFromDestination();
-            requestDto.setMaxCost();
-            requestDto.setNeedCoveredParking();
-            requestDto.setNeedSecuredParking();
-            requestDto.setNeedSpecialParking();
+//            requestDto.setDestinationXCoordinate();
+//            requestDto.setDestinationYCoordinate();
+//            requestDto.setMaxDistanceFromDestination();
+//            requestDto.setMaxCost();
+//            requestDto.setNeedCoveredParking();
+//            requestDto.setNeedSecuredParking();
+//            requestDto.setNeedSpecialParking();
         }
     }
 
@@ -148,7 +148,7 @@ public class ClientAgent extends Agent {
             //  requirements? In such case he should be able to get information about every parking from the unique
             //  ParkingAgents and that requires additional communication ...
             // foreach parking add receiver ...
-            aclMessage.addReceiver();
+//            aclMessage.addReceiver();
 
             aclMessage.setContent(Constants.CALL_FOR_PROPOSAL_CONTENT);
             aclMessage.setLanguage(Constants.MESSAGE_LANGUAGE);
@@ -196,7 +196,7 @@ public class ClientAgent extends Agent {
     private ACLMessage prepareMessageToParkingAgent() {
         ACLMessage messageToParkingAgent = new ACLMessage(ACLMessage.REQUEST);
         // ToDo#12 Same as above considering addReceiver ... this time though it is sent only to one ParkingAgent
-        messageToParkingAgent.addReceiver();
+//        messageToParkingAgent.addReceiver();
         messageToParkingAgent.setLanguage(Constants.MESSAGE_LANGUAGE);
         // messageToParkingAgent.setOntology("I guess I won't be using an ontology");
         messageToParkingAgent.setSender(getAID());

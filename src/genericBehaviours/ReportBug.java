@@ -42,7 +42,8 @@ public class ReportBug extends OneShotBehaviour {
     private ACLMessage configureBugReport(List<DFAgentDescription> serviceAgents) {
         ACLMessage bugReport = new ACLMessage(ACLMessage.REQUEST);
         Date date = new Date();
-        bugReport.addReceiver(serviceAgents.get(0));
+        // ToDo#2.3 Solve this
+//        bugReport.addReceiver(serviceAgents.get(0));
         bugReport.setLanguage(Constants.MESSAGE_LANGUAGE);
         bugReport.setProtocol(Constants.BUG_REPORT_MESSAGE_PROTOCOL);
         bugReport.setContent(date + Constants.BUG_REPORT_MESSAGE_CONTENT);

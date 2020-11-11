@@ -1,4 +1,4 @@
-package roles;
+package agents;
 
 import genericBehaviours.TerminateAgent;
 import dtos.BugReportDto;
@@ -65,7 +65,7 @@ public class ServiceAgent extends Agent {
     }
 
     private void setBehavioursQueue() {
-        // ToDo#6 User verification and vehicles checking behaviours should be added here during further
+        // ToDo#1 User verification and vehicles checking behaviours should be added here during further
         //  implementation work - especially when application will be used for business purposes
         FSMBehaviour fsmBehaviour = new FSMBehaviour(this);
         fsmBehaviour.registerFirstState(new SayHello(), Constants.INITIAL_STATE);

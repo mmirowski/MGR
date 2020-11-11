@@ -1,4 +1,4 @@
-package roles;
+package agents;
 
 import genericBehaviours.ReportBug;
 import genericBehaviours.TerminateAgent;
@@ -150,7 +150,7 @@ public class BankAgent extends Agent {
                 bankVault += acceptedOfferPrice;
             });
 
-            // ToDo#8 During further implementation and app designing add a dedicated functionality to report a bug.
+            // ToDo#2 During further implementation and app designing add a dedicated functionality to report a bug.
             //  Right now a bug report is sent with dummy data approx. once in every 5 runs of Bank Agent.
             Random random = new Random();
             int upperBound = 5;

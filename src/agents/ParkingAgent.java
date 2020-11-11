@@ -1,4 +1,4 @@
-package roles;
+package agents;
 
 import dtos.ParkingDto;
 import dtos.RequestDto;
@@ -68,17 +68,17 @@ public class ParkingAgent extends Agent {
             // Within this method I will have to use:
 //            MessageTemplate auctionRequest = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
 //                    MessageTemplate.MatchProtocol(Constants.CALL_FOR_AN_AUCTION));
-            addBehaviour(new ExchangeDataWithBank());
-            addBehaviour(new ObtainAuctionResults());
+//            addBehaviour(new ExchangeDataWithBank());
+//            addBehaviour(new ObtainAuctionResults());
         }
 
         // Inside the SendOffers behaviour ParkingAgent should pass also his AID - to make further communication
         // possible for the ClientAgent
-        addBehaviour(new SendOffers());
+//        addBehaviour(new SendOffers());
         // update freeSpaces
         // check Clients positions and sensors data
-        addBehaviour(new ConfirmClientIsStaying());
-        addBehaviour(new ConfirmClientIsLeaving());
+//        addBehaviour(new ConfirmClientIsStaying());
+//        addBehaviour(new ConfirmClientIsLeaving());
         addBehaviour(new ReportBug());
         addBehaviour(new TerminateAgent());
     }
