@@ -1,6 +1,5 @@
 package dtos;
 
-import jade.core.AID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class RequestDto implements Serializable {
 
-    private AID client;
+//    private AID client;
+    private int id;
     private double destinationXCoordinate;
     private double destinationYCoordinate;
     private double maxDistanceFromDestination;

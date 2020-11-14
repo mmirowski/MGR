@@ -128,7 +128,7 @@ public class ClientAgent extends Agent {
         public void action() {
             // ToDo#5 get input from User considering parking position and parameters ... - so essentially the same
             //  as in #4
-            requestDto.setClient(getAID());
+//            requestDto.setClient(getAID());
 //            requestDto.setDestinationXCoordinate();
 //            requestDto.setDestinationYCoordinate();
 //            requestDto.setMaxDistanceFromDestination();

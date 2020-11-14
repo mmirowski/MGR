@@ -11,10 +11,12 @@ import java.util.Date;
 @AllArgsConstructor
 public class ParkingDto {
 
+    private int id;
     private double parkingXCoordinate;
     private double parkingYCoordinate;
     private int maxCapacity;
     private int freeSpaces;
+    private double cost;
     private Date freeSpacesLastUpdate;
     private boolean isCovered;
     private boolean isSecured;
