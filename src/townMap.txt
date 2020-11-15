@@ -1,4 +1,5 @@
-10.25 10.11 50 20 30 true true false
-80.75 80.22 40 10 20 true false false
-10.10 80.40 40 40 40 true true true
-79.00 10.00 20 30 10 true false false
+10.25 10.11 50 20 30 false true false
+80.75 80.22 40 10 20 true true false
+10.10 80.40 40 40 40 true false true
+79.00 10.00 20 30 10 true true false
+42.23 51.20 20 30 10 false false false

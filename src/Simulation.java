@@ -11,6 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulation {
     public static void main(String[] args) {
+        int algorithmIteration = 0;
+        int usersWithParkingLots = 0;
         List<UserDto> appUsers = new ArrayList<>();
         List<RequestDto> usersRequests = new ArrayList<>();
         List<ParkingDto> parkings = new ArrayList<>();
@@ -18,17 +20,23 @@ public class Simulation {
         HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping = new HashMap<>();
 
         extractDataFromSurveyResponses(appUsers);
-        prepareSimulationRequests(appUsers, usersRequests, userRequestMapping);
         initializeParkingsData(parkings);
-        prepareClosestParkingsListForUser(usersRequests, parkings, requestClosestParkingsMapping);
-        
-        // for each appUser prepare a requestDto to the closest to the destination parking
-//        for (UserDto user : urpMappings.) {
-//
-//        }
-        // choose these requestDtos which are the best from the parking point of view and assign those parking spaces
-        // repeat process for those users, who did not get the parking space
-        // check out the results
+
+        do {
+            int validOffers = 0;
+            prepareSimulationRequests(appUsers, usersRequests, userRequestMapping);
+            prepareClosestParkingsListForUser(usersRequests, parkings, requestClosestParkingsMapping);
+            sendRequestsToParkings(requestClosestParkingsMapping, algorithmIteration);
+            orderOffersFromBest(parkings);
+            chooseBestOffers(parkings, appUsers);
+
+            validOffers = checkIfOffersNumberMatch(parkings);
+            usersWithParkingLots = countSatisfiedUsers(appUsers);
+            System.out.println(validOffers);
+            System.out.println("Satisfied users number: " + usersWithParkingLots);
+            algorithmIteration++;
+            // Repeat process for those users, who did not get the parking space
+        } while (isStopConditionMet(requestClosestParkingsMapping, appUsers, algorithmIteration));
     }
 
     private static void extractDataFromSurveyResponses(List<UserDto> appUsers) {
@@ -47,6 +55,8 @@ public class Simulation {
                 line = bufferedReader.readLine();
                 surveyID++;
             }
+
+            Collections.shuffle(appUsers);
 
         } catch (IOException e) {
             System.out.println("An error occurred while reading lines from the usersResponses.txt file.");
@@ -75,10 +85,12 @@ public class Simulation {
 
     private static void prepareSimulationRequests(List<UserDto> appUsers, List<RequestDto> usersRequests,
                                                   HashMap<UserDto, RequestDto> userRequestMapping) {
-        for (UserDto user: appUsers) {
-            RequestDto newRequest = configureRequestDto(user);
-            usersRequests.add(newRequest);
-            userRequestMapping.put(user, newRequest);
+        for (UserDto user : appUsers) {
+            if (!user.isHasReservedParkingSpot()) {
+                RequestDto newRequest = configureRequestDto(user);
+                usersRequests.add(newRequest);
+                userRequestMapping.put(user, newRequest);
+            }
         }
     }
 
@@ -92,7 +104,8 @@ public class Simulation {
                 user.getMaxCost(),
                 user.isNeedCoveredParking(),
                 user.isNeedSecuredParking(),
-                user.isNeedSpecialParking()
+                user.isNeedSpecialParking(),
+                false
         );
     }
 
@@ -130,23 +143,48 @@ public class Simulation {
                 timeStamp,
                 Boolean.parseBoolean(parkingParameters.get(5)),
                 Boolean.parseBoolean(parkingParameters.get(6)),
-                Boolean.parseBoolean(parkingParameters.get(7))
-                );
+                Boolean.parseBoolean(parkingParameters.get(7)),
+                new ArrayList<>()
+        );
     }
 
-    private static void prepareClosestParkingsListForUser(List<RequestDto> usersRequests, List<ParkingDto> parkings, HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping) {
+    private static void prepareClosestParkingsListForUser(List<RequestDto> usersRequests, List<ParkingDto> parkings,
+                                                          HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping) {
         for (RequestDto request : usersRequests) {
-            List<ParkingDto> sortedParkings = configureParkingDistanceMapping(request, parkings);
-            requestClosestParkingsMapping.put(request, sortedParkings);
+            if (!request.isDone()) {
+                List<ParkingDto> acceptableParkings = selectAcceptableParkings(request, parkings);
+                List<ParkingDto> sortedParkings = configureParkingDistanceMapping(request, acceptableParkings);
+                requestClosestParkingsMapping.put(request, sortedParkings);
+            }
         }
+    }
+
+    private static List<ParkingDto> selectAcceptableParkings(RequestDto request, List<ParkingDto> allParkings) {
+        List<ParkingDto> localParkings = new ArrayList<>(allParkings);
+        localParkings.removeIf(parking -> !checkIfParkingIsAcceptable(request, parking));
+        return localParkings;
+    }
+
+    private static boolean checkIfParkingIsAcceptable(RequestDto request, ParkingDto parking) {
+        int coveredReq = request.isNeedCoveredParking() ? 1 : 0;
+        int securedReq = request.isNeedSecuredParking() ? 1 : 0;
+        int specialReq = request.isNeedSpecialParking() ? 1 : 0;
+
+        int isCovered = parking.isCovered() ? 1 : 0;
+        int isSecured = parking.isSecured() ? 1 : 0;
+        int isSpecial = parking.isSpecial() ? 1 : 0;
+
+        return coveredReq <= isCovered && securedReq <= isSecured && specialReq <= isSpecial;
     }
 
     private static List<ParkingDto> configureParkingDistanceMapping(RequestDto request, List<ParkingDto> allParkings) {
         HashMap<ParkingDto, Double> parkingDistanceMapping = new HashMap<>();
 
         for (ParkingDto parking : allParkings) {
-            Double distanceToParking = calculateDistance(request, parking);
-            parkingDistanceMapping.put(parking, distanceToParking);
+            if (parking.getFreeSpaces() > 0) {
+                Double distanceToParking = calculateDistance(request, parking);
+                parkingDistanceMapping.put(parking, distanceToParking);
+            }
         }
 
         return sortParkingsFromClosestToFarthest(parkingDistanceMapping);
@@ -173,5 +211,118 @@ public class Simulation {
         }
 
         return sortedParkings;
+    }
+
+    private static void sendRequestsToParkings(HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping,
+                                               int algorithmIteration) {
+
+        for (RequestDto key : requestClosestParkingsMapping.keySet()) {
+            Iterator<ParkingDto> iterator = requestClosestParkingsMapping.get(key).iterator();
+
+            for (int i = 0; i < algorithmIteration; i++) {
+                if (iterator.hasNext()) {
+                    iterator.next();
+                }
+            }
+
+            if (iterator.hasNext()) {
+                ParkingDto highestPriorityParking = iterator.next();
+                List<RequestDto> existingOffers = highestPriorityParking.getOffers();
+                existingOffers.add(key);
+                highestPriorityParking.setOffers(existingOffers);
+            }
+        }
+    }
+
+    // Choose these requests, which are the best from the parking point of view - and assign parking spaces
+
+    private static void chooseBestOffers(List<ParkingDto> parkings, List<UserDto> appUsers) {
+        for (ParkingDto parking : parkings) {
+            int lotsAvailable = parking.getFreeSpaces();
+            int index = Math.min(lotsAvailable, parking.getOffers().size());
+            List<RequestDto> bestOffers = parking.getOffers().subList(0, index);
+
+            for (RequestDto request : bestOffers) {
+                UserDto user = appUsers.get(request.getId() - 1);
+
+                double diff = user.getMoney() - request.getMaxCost();
+
+                if (diff >= 0) {
+                    user.setMoney(diff);
+                    lotsAvailable--;
+                    parking.setFreeSpaces(lotsAvailable);
+                    parking.setFreeSpacesLastUpdate(new Date());
+                    user.setHasReservedParkingSpot(true);
+                }
+            }
+
+            parking.getOffers().subList(0, index).clear();
+        }
+    }
+    private static void orderOffersFromBest(List<ParkingDto> parkings) {
+        for (ParkingDto parking : parkings) {
+            List<RequestDto> submittedOffers = parking.getOffers();
+            submittedOffers.sort(new RequestDto.sortByCost());
+            Collections.reverse(submittedOffers);
+        }
+    }
+
+    private static int checkIfOffersNumberMatch(List<ParkingDto> parkings) {
+        int offersNumber = 0;
+
+        for (ParkingDto parking : parkings) {
+            offersNumber += parking.getOffers().size();
+        }
+
+        return offersNumber;
+    }
+
+    private static int countSatisfiedUsers(List<UserDto> appUsers) {
+        int satisfied = 0;
+
+        for (UserDto user : appUsers) {
+            if (user.isHasReservedParkingSpot()) {
+                satisfied++;
+            }
+        }
+        return satisfied;
+    }
+
+    private static boolean isStopConditionMet(HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping,
+                                              List<UserDto> appUsers, int algorithmIteration) {
+        boolean areFreeSpacesAvailable = false;
+        boolean areUsersLookingForAParking = false;
+        boolean doUsersHaveFunds = false;
+
+        for (RequestDto key : requestClosestParkingsMapping.keySet()) {
+            List<ParkingDto> acceptableParkingsLeft = requestClosestParkingsMapping.get(key);
+            for (ParkingDto parking : acceptableParkingsLeft) {
+                if (parking.getFreeSpaces() > 0) {
+                    areFreeSpacesAvailable = true;
+                    break;
+                }
+            }
+        }
+
+        for (RequestDto key : requestClosestParkingsMapping.keySet()) {
+            List<ParkingDto> acceptableParkingsLeft = requestClosestParkingsMapping.get(key);
+            for (ParkingDto parking : acceptableParkingsLeft) {
+                for (UserDto user : appUsers) {
+                    if (user.getMoney() > parking.getCost()) {
+                        doUsersHaveFunds = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        for (UserDto user : appUsers) {
+            if (!user.isHasReservedParkingSpot()) {
+                areUsersLookingForAParking = true;
+                break;
+            }
+        }
+
+        return areFreeSpacesAvailable && areUsersLookingForAParking && doUsersHaveFunds && algorithmIteration < 5;
     }
 }

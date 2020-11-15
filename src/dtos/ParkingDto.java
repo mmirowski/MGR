@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,5 +22,7 @@ public class ParkingDto {
     private boolean isCovered;
     private boolean isSecured;
     private boolean isSpecial;
+
+    private List<RequestDto> offers;
 
 }
