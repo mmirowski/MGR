@@ -21,6 +21,7 @@ public class RequestDto implements Serializable {
     private boolean needCoveredParking;
     private boolean needSecuredParking;
     private boolean needSpecialParking;
+    private boolean isWillingToPayExtra;
     private boolean isDone;
 
     public static class sortByCost implements Comparator<RequestDto> {

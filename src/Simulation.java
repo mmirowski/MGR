@@ -13,9 +13,11 @@ public class Simulation {
     public static void main(String[] args) {
         int algorithmIteration = 0;
         int usersWithParkingLots = 0;
+
         List<UserDto> appUsers = new ArrayList<>();
         List<RequestDto> usersRequests = new ArrayList<>();
         List<ParkingDto> parkings = new ArrayList<>();
+
         HashMap<UserDto, RequestDto> userRequestMapping = new HashMap<>();
         HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping = new HashMap<>();
 
@@ -32,7 +34,7 @@ public class Simulation {
 
             validOffers = checkIfOffersNumberMatch(parkings);
             usersWithParkingLots = countSatisfiedUsers(appUsers);
-            System.out.println(validOffers);
+            System.out.println("Number of valid offers:" + validOffers);
             System.out.println("Satisfied users number: " + usersWithParkingLots);
             algorithmIteration++;
             // Repeat process for those users, who did not get the parking space
@@ -83,32 +85,6 @@ public class Simulation {
                 Boolean.parseBoolean(userParameters.get(5)));
     }
 
-    private static void prepareSimulationRequests(List<UserDto> appUsers, List<RequestDto> usersRequests,
-                                                  HashMap<UserDto, RequestDto> userRequestMapping) {
-        for (UserDto user : appUsers) {
-            if (!user.isHasReservedParkingSpot()) {
-                RequestDto newRequest = configureRequestDto(user);
-                usersRequests.add(newRequest);
-                userRequestMapping.put(user, newRequest);
-            }
-        }
-    }
-
-    private static RequestDto configureRequestDto(UserDto user) {
-        return new RequestDto(
-                user.getId(),
-                // Journey destination coordinates are picked randomly within town map range
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
-                user.getMaxDistanceFromDestination(),
-                user.getMaxCost(),
-                user.isNeedCoveredParking(),
-                user.isNeedSecuredParking(),
-                user.isNeedSpecialParking(),
-                false
-        );
-    }
-
     private static void initializeParkingsData(List<ParkingDto> parkings) {
         BufferedReader bufferedReader;
         int parkingID = 1;
@@ -148,6 +124,33 @@ public class Simulation {
         );
     }
 
+    private static void prepareSimulationRequests(List<UserDto> appUsers, List<RequestDto> allUsersRequests,
+                                                  HashMap<UserDto, RequestDto> userRequestMapping) {
+        for (UserDto user : appUsers) {
+            if (!user.isHasReservedParkingSpot()) {
+                RequestDto newRequest = configureRequestDto(user);
+                allUsersRequests.add(newRequest);
+                userRequestMapping.put(user, newRequest);
+            }
+        }
+    }
+
+    private static RequestDto configureRequestDto(UserDto user) {
+        return new RequestDto(
+                user.getId(),
+                // Journey destination coordinates are picked randomly within town map range
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
+                user.getMaxDistanceFromDestination(),
+                user.getMaxCost(),
+                user.isNeedCoveredParking(),
+                user.isNeedSecuredParking(),
+                user.isNeedSpecialParking(),
+                user.isWillingToPayExtra(),
+                false
+        );
+    }
+
     private static void prepareClosestParkingsListForUser(List<RequestDto> usersRequests, List<ParkingDto> parkings,
                                                           HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping) {
         for (RequestDto request : usersRequests) {
@@ -169,34 +172,41 @@ public class Simulation {
         int coveredReq = request.isNeedCoveredParking() ? 1 : 0;
         int securedReq = request.isNeedSecuredParking() ? 1 : 0;
         int specialReq = request.isNeedSpecialParking() ? 1 : 0;
+        double distance = calculateDistance(request, parking);
+        double cost = parking.getCost();
 
         int isCovered = parking.isCovered() ? 1 : 0;
         int isSecured = parking.isSecured() ? 1 : 0;
         int isSpecial = parking.isSpecial() ? 1 : 0;
-
-        double distance = calculateDistance(request, parking);
         double acceptableDistance = request.getMaxDistanceFromDestination();
+        double acceptableCost = request.getMaxCost();
 
-        return coveredReq <= isCovered && securedReq <= isSecured && specialReq <= isSpecial && distance <= acceptableDistance;
-    }
+        boolean isExtraCostConditionMet = request.isWillingToPayExtra() &&
+                        Math.abs(distance - acceptableDistance) < Constants.CLOSE_DESTINATION_MODIFIER;
 
-    private static List<ParkingDto> configureParkingDistanceMapping(RequestDto request, List<ParkingDto> allParkings) {
-        HashMap<ParkingDto, Double> parkingDistanceMapping = new HashMap<>();
-
-        for (ParkingDto parking : allParkings) {
-            if (parking.getFreeSpaces() > 0) {
-                Double distanceToParking = calculateDistance(request, parking);
-                parkingDistanceMapping.put(parking, distanceToParking);
-            }
-        }
-
-        return sortParkingsFromClosestToFarthest(parkingDistanceMapping);
+        return parking.getFreeSpaces() > 0 &&
+                coveredReq <= isCovered &&
+                securedReq <= isSecured &&
+                specialReq <= isSpecial &&
+                distance <= acceptableDistance &&
+                (cost <= acceptableCost || isExtraCostConditionMet);
     }
 
     private static double calculateDistance(RequestDto request, ParkingDto parking) {
         // For a given request, calculate distance to a specific parking
         return (Math.abs(request.getDestinationXCoordinate() - parking.getParkingXCoordinate()) +
                 Math.abs(request.getDestinationYCoordinate() - parking.getParkingYCoordinate()));
+    }
+
+    private static List<ParkingDto> configureParkingDistanceMapping(RequestDto request, List<ParkingDto> acceptedParkings) {
+        HashMap<ParkingDto, Double> parkingDistanceMapping = new HashMap<>();
+
+        for (ParkingDto p : acceptedParkings) {
+            Double distanceToParking = calculateDistance(request, p);
+            parkingDistanceMapping.put(p, distanceToParking);
+        }
+
+        return sortParkingsFromClosestToFarthest(parkingDistanceMapping);
     }
 
     private static List<ParkingDto> sortParkingsFromClosestToFarthest(HashMap<ParkingDto, Double> parkingDistanceMapping) {
@@ -224,11 +234,7 @@ public class Simulation {
         for (RequestDto key : requestClosestParkingsMapping.keySet()) {
             Iterator<ParkingDto> iterator = requestClosestParkingsMapping.get(key).iterator();
 
-            for (int i = 0; i < algorithmIteration; i++) {
-                if (iterator.hasNext()) {
-                    iterator.next();
-                }
-            }
+            setCurrentlyConsideredEntry(algorithmIteration, iterator);
 
             if (iterator.hasNext()) {
                 ParkingDto highestPriorityParking = iterator.next();
@@ -239,13 +245,42 @@ public class Simulation {
         }
     }
 
-    // Choose these requests, which are the best from the parking point of view - and assign parking spaces
+    /**
+     * setCurrentlyConsideredEntryIndex method was designed in order to set the iterator made from the
+     * requestClosestParkingsMapping.get(key) on the current RequestDto. Every RequestDto -- ClosestParkingDto mapping
+     * has (or could have) several ParkingDtos as the values. During the algorithmIteration == 0 every RequestDto
+     * should be sent to its 'best' (closest) parking mapped. For a single RequestDto every next iteration should handle
+     * next ParkingDto from the mapped list, and that is because: if RequestDto A is considered in that iteration,
+     * therefore it didn't get the place in the highest-listed ParkingDto B. In that case, there no sense in sending
+     * same RequestDto A to the ParkingDto B; it should instead be sent to the next on the list, ParkingDto C.
+     * setCurrentlyConsideredEntryIndex method checks which iteration is now run and designates the iterator to the
+     * necessary next() item. Parameters taken by the method are:
+     * @param algorithmIteration is the index of currently run iteration,
+     * @param iterator is made of the requestClosestParkingsMapping.get(key) and contains ParkingDtos ordered from the
+     *                 closest (best) to the farthest (worst) one.
+     */
+    private static void setCurrentlyConsideredEntry(int algorithmIteration, Iterator<ParkingDto> iterator) {
+        for (int i = 0; i < algorithmIteration; i++) {
+            if (iterator.hasNext()) {
+                iterator.next();
+            }
+        }
+    }
 
-    private static void chooseBestOffers(List<ParkingDto> parkings, List<UserDto> appUsers) {
+    private static void orderOffersFromBest(List<ParkingDto> parkings) {
         for (ParkingDto parking : parkings) {
-            int lotsAvailable = parking.getFreeSpaces();
-            int index = Math.min(lotsAvailable, parking.getOffers().size());
-            List<RequestDto> bestOffers = parking.getOffers().subList(0, index);
+            List<RequestDto> submittedOffers = parking.getOffers();
+            submittedOffers.sort(new RequestDto.sortByCost());
+            Collections.reverse(submittedOffers);
+        }
+    }
+
+    // Choose these requests, which are the best from the parking point of view - and assign parking spaces
+    private static void chooseBestOffers(List<ParkingDto> parkings, List<UserDto> appUsers) {
+        for (ParkingDto thisP : parkings) {
+            int lotsAvailable = thisP.getFreeSpaces();
+            int index = Math.min(lotsAvailable, thisP.getOffers().size());
+            List<RequestDto> bestOffers = thisP.getOffers().subList(0, index);
 
             for (RequestDto request : bestOffers) {
                 UserDto user = appUsers
@@ -263,22 +298,17 @@ public class Simulation {
 
                 if (diff >= 0) {
                     user.setMoney(diff);
-                    lotsAvailable--;
-                    parking.setFreeSpaces(lotsAvailable);
-                    parking.setFreeSpacesLastUpdate(new Date());
+                    thisP.setFreeSpaces(--lotsAvailable);
+                    thisP.setFreeSpacesLastUpdate(new Date());
                     user.setHasReservedParkingSpot(true);
+                    request.setDone(true);
                 }
             }
 
-            parking.getOffers().subList(0, index).clear();
-        }
-    }
-
-    private static void orderOffersFromBest(List<ParkingDto> parkings) {
-        for (ParkingDto parking : parkings) {
-            List<RequestDto> submittedOffers = parking.getOffers();
-            submittedOffers.sort(new RequestDto.sortByCost());
-            Collections.reverse(submittedOffers);
+            // ToDo#7 setOffers - right now this might not work
+            //  thisP.getOffers().subList(0, index).clear();
+            //  Check out the following line!
+            thisP.setOffers(thisP.getOffers().subList(index,thisP.getOffers().size()));
         }
     }
 

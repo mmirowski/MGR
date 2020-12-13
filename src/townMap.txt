@@ -1,5 +1,5 @@
-10.25 10.11 50 5 30 false true false
-80.75 80.22 40 4 20 true true false
-10.10 80.40 40 1 40 true false true
-79.00 10.00 20 2 10 true true false
-42.23 51.20 20 4 10 false false false
+50 45 50 5 30 false true false
+2240 2230 40 4 20 true true false
+1150 1150 40 1 40 true false true
+1800 450 20 2 10 true true false
+600 1900 20 4 10 false false false

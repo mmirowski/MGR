@@ -46,6 +46,7 @@ public final class Constants {
 
     public static final int TWENTY_SECONDS = 20000;
     public static final int SCALE_MODIFIER = 1000;
+    public static final int CLOSE_DESTINATION_MODIFIER = 50;
     public static final double BOUND = 2250.0;
     public static final String PATH_TO_SURVEY_RESPONSES_FILE = "src/usersResponses.txt";
     public static final String PATH_TO_TOWN_MAP_FILE = "src/townMap.txt";
