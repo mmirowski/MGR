@@ -34,7 +34,8 @@ public class Simulation {
 
             validOffers = checkIfOffersNumberMatch(parkings);
             usersWithParkingLots = countSatisfiedUsers(appUsers);
-            System.out.println("Number of valid offers:" + validOffers);
+            System.out.println("Iteration number: " + algorithmIteration);
+            System.out.println("Number of valid offers: " + validOffers);
             System.out.println("Satisfied users number: " + usersWithParkingLots);
             algorithmIteration++;
             // Repeat process for those users, who did not get the parking space
@@ -246,15 +247,14 @@ public class Simulation {
     }
 
     /**
-     * setCurrentlyConsideredEntryIndex method was designed in order to set the iterator made from the
-     * requestClosestParkingsMapping.get(key) on the current RequestDto. Every RequestDto -- ClosestParkingDto mapping
-     * has (or could have) several ParkingDtos as the values. During the algorithmIteration == 0 every RequestDto
-     * should be sent to its 'best' (closest) parking mapped. For a single RequestDto every next iteration should handle
-     * next ParkingDto from the mapped list, and that is because: if RequestDto A is considered in that iteration,
-     * therefore it didn't get the place in the highest-listed ParkingDto B. In that case, there no sense in sending
-     * same RequestDto A to the ParkingDto B; it should instead be sent to the next on the list, ParkingDto C.
-     * setCurrentlyConsideredEntryIndex method checks which iteration is now run and designates the iterator to the
-     * necessary next() item. Parameters taken by the method are:
+     * setCurrentlyConsideredEntry method checks which iteration is now run and designates the iterator to the
+     * matching algorithmIteration next() item.
+     * Every RequestDto -- ClosestParkingDto mapping has (or could have) several ParkingDtos as the values.
+     * During the algorithmIteration == 0 every RequestDto should be sent to its 'best' (closest) parking mapped.
+     * For a single RequestDto every next iteration should handle next ParkingDto from the mapped list, and that
+     * is because: if RequestDto A is considered in that iteration, therefore it didn't get the place in the
+     * highest-listed ParkingDto B. In that case, there is no sense in sending same RequestDto A to the ParkingDto B;
+     * it should instead be sent to the next on the list, ParkingDto C. Parameters taken by the method are:
      * @param algorithmIteration is the index of currently run iteration,
      * @param iterator is made of the requestClosestParkingsMapping.get(key) and contains ParkingDtos ordered from the
      *                 closest (best) to the farthest (worst) one.
@@ -277,10 +277,10 @@ public class Simulation {
 
     // Choose these requests, which are the best from the parking point of view - and assign parking spaces
     private static void chooseBestOffers(List<ParkingDto> parkings, List<UserDto> appUsers) {
-        for (ParkingDto thisP : parkings) {
-            int lotsAvailable = thisP.getFreeSpaces();
-            int index = Math.min(lotsAvailable, thisP.getOffers().size());
-            List<RequestDto> bestOffers = thisP.getOffers().subList(0, index);
+        for (ParkingDto p : parkings) {
+            int lotsAvailable = p.getFreeSpaces();
+            int minFromLotsAndOffersNumbers = Math.min(lotsAvailable, p.getOffers().size());
+            List<RequestDto> bestOffers = p.getOffers().subList(0, minFromLotsAndOffersNumbers);
 
             for (RequestDto request : bestOffers) {
                 UserDto user = appUsers
@@ -298,17 +298,14 @@ public class Simulation {
 
                 if (diff >= 0) {
                     user.setMoney(diff);
-                    thisP.setFreeSpaces(--lotsAvailable);
-                    thisP.setFreeSpacesLastUpdate(new Date());
+                    p.setFreeSpaces(--lotsAvailable);
+                    p.setFreeSpacesLastUpdate(new Date());
                     user.setHasReservedParkingSpot(true);
                     request.setDone(true);
                 }
             }
 
-            // ToDo#7 setOffers - right now this might not work
-            //  thisP.getOffers().subList(0, index).clear();
-            //  Check out the following line!
-            thisP.setOffers(thisP.getOffers().subList(index,thisP.getOffers().size()));
+            p.setOffers(p.getOffers().subList(minFromLotsAndOffersNumbers,p.getOffers().size()));
         }
     }
 
@@ -330,14 +327,21 @@ public class Simulation {
                 satisfied++;
             }
         }
+
         return satisfied;
     }
 
     private static boolean isStopConditionMet(HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping,
-                                              List<UserDto> appUsers, int algorithmIteration) {
+                                              List<UserDto> appUsers, int algorithmItertion) {
+
+        boolean areFreeSpacesAvailable = areThereFreeSpacesAvailable(requestClosestParkingsMapping);
+        boolean areUsersLookingForAParking = areThereUsersLookingForAParking(requestClosestParkingsMapping, appUsers);
+
+        return areFreeSpacesAvailable && areUsersLookingForAParking && algorithmItertion < Constants.FINAL_ITERATION;
+    }
+
+    private static boolean areThereFreeSpacesAvailable(HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping) {
         boolean areFreeSpacesAvailable = false;
-        boolean areUsersLookingForAParking = false;
-        boolean doUsersHaveFunds = false;
 
         for (RequestDto key : requestClosestParkingsMapping.keySet()) {
             List<ParkingDto> acceptableParkingsLeft = requestClosestParkingsMapping.get(key);
@@ -349,25 +353,24 @@ public class Simulation {
             }
         }
 
+        return areFreeSpacesAvailable;
+    }
+
+    private static boolean areThereUsersLookingForAParking(HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping, List<UserDto> appUsers) {
+        boolean areUsersLookingForAParking = false;
+
         for (RequestDto key : requestClosestParkingsMapping.keySet()) {
             List<ParkingDto> acceptableParkingsLeft = requestClosestParkingsMapping.get(key);
             for (ParkingDto parking : acceptableParkingsLeft) {
                 for (UserDto user : appUsers) {
-                    if (user.getMoney() > parking.getCost()) {
-                        doUsersHaveFunds = true;
+                    if (!user.isHasReservedParkingSpot() && user.getMoney() > parking.getCost()) {
+                        areUsersLookingForAParking = true;
                         break;
                     }
                 }
             }
         }
 
-        for (UserDto user : appUsers) {
-            if (!user.isHasReservedParkingSpot()) {
-                areUsersLookingForAParking = true;
-                break;
-            }
-        }
-
-        return areFreeSpacesAvailable && areUsersLookingForAParking && doUsersHaveFunds && algorithmIteration < 5;
+        return areUsersLookingForAParking;
     }
 }

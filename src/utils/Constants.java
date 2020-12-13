@@ -44,6 +44,7 @@ public final class Constants {
     public static final String CALL_FOR_AN_AUCTION = "Call for an auction";
     public static final String CALL_FOR_FINAL_DECISION = "Call for final decision: accept or deny parking space reservation";
 
+    public static final int FINAL_ITERATION = 5;
     public static final int TWENTY_SECONDS = 20000;
     public static final int SCALE_MODIFIER = 1000;
     public static final int CLOSE_DESTINATION_MODIFIER = 50;
