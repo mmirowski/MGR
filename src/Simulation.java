@@ -70,12 +70,12 @@ public class Simulation {
                 "",
                 surveyID,
                 // Initial user coordinates are picked randomly within town map range
-                ThreadLocalRandom.current().nextDouble(0.0, 100.0),
-                ThreadLocalRandom.current().nextDouble(0.0, 100.0),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
                 // Funds are assumed to be available for each app user
                 ThreadLocalRandom.current().nextDouble(50.0, 100.0),
                 false,
-                Double.parseDouble(userParameters.get(0)),
+                Double.parseDouble(userParameters.get(0)) * Constants.SCALE_MODIFIER,
                 Double.parseDouble(userParameters.get(1)),
                 Boolean.parseBoolean(userParameters.get(2)),
                 Boolean.parseBoolean(userParameters.get(3)),
@@ -98,8 +98,8 @@ public class Simulation {
         return new RequestDto(
                 user.getId(),
                 // Journey destination coordinates are picked randomly within town map range
-                ThreadLocalRandom.current().nextDouble(0.0, 100.0),
-                ThreadLocalRandom.current().nextDouble(0.0, 100.0),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
                 user.getMaxDistanceFromDestination(),
                 user.getMaxCost(),
                 user.isNeedCoveredParking(),
@@ -174,7 +174,10 @@ public class Simulation {
         int isSecured = parking.isSecured() ? 1 : 0;
         int isSpecial = parking.isSpecial() ? 1 : 0;
 
-        return coveredReq <= isCovered && securedReq <= isSecured && specialReq <= isSpecial;
+        double distance = calculateDistance(request, parking);
+        double acceptableDistance = request.getMaxDistanceFromDestination();
+
+        return coveredReq <= isCovered && securedReq <= isSecured && specialReq <= isSpecial && distance <= acceptableDistance;
     }
 
     private static List<ParkingDto> configureParkingDistanceMapping(RequestDto request, List<ParkingDto> allParkings) {
@@ -206,6 +209,8 @@ public class Simulation {
                 if (entry.getValue().equals(val)) {
                     ParkingDto closestParking = entry.getKey();
                     sortedParkings.add(closestParking);
+                    parkingDistanceMapping.remove(closestParking);
+                    break;
                 }
             }
         }
@@ -243,7 +248,16 @@ public class Simulation {
             List<RequestDto> bestOffers = parking.getOffers().subList(0, index);
 
             for (RequestDto request : bestOffers) {
-                UserDto user = appUsers.get(request.getId() - 1);
+                UserDto user = appUsers
+                        .stream()
+                        .filter(obj -> obj.getId() == request.getId())
+                        .findAny()
+                        .orElseGet(null);
+
+                if (user == null) {
+                    System.out.println("One of the requests didn't match any user - debug chooseBestOffers method!");
+                    break;
+                }
 
                 double diff = user.getMoney() - request.getMaxCost();
 
@@ -259,6 +273,7 @@ public class Simulation {
             parking.getOffers().subList(0, index).clear();
         }
     }
+
     private static void orderOffersFromBest(List<ParkingDto> parkings) {
         for (ParkingDto parking : parkings) {
             List<RequestDto> submittedOffers = parking.getOffers();
