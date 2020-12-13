@@ -12,7 +12,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Simulation {
     public static void main(String[] args) {
         int algorithmIteration = 0;
-        int usersWithParkingLots = 0;
 
         List<UserDto> appUsers = new ArrayList<>();
         List<RequestDto> usersRequests = new ArrayList<>();
@@ -25,19 +24,15 @@ public class Simulation {
         initializeParkingsData(parkings);
 
         do {
-            int validOffers = 0;
             prepareSimulationRequests(appUsers, usersRequests, userRequestMapping);
             prepareClosestParkingsListForUser(usersRequests, parkings, requestClosestParkingsMapping);
             sendRequestsToParkings(requestClosestParkingsMapping, algorithmIteration);
             orderOffersFromBest(parkings);
             chooseBestOffers(parkings, appUsers);
 
-            validOffers = checkIfOffersNumberMatch(parkings);
-            usersWithParkingLots = countSatisfiedUsers(appUsers);
-            System.out.println("Iteration number: " + algorithmIteration);
-            System.out.println("Number of valid offers: " + validOffers);
-            System.out.println("Satisfied users number: " + usersWithParkingLots);
+            printIterationInformation(algorithmIteration, appUsers, parkings);
             algorithmIteration++;
+
             // Repeat process for those users, who did not get the parking space
         } while (isStopConditionMet(requestClosestParkingsMapping, appUsers, algorithmIteration));
     }
@@ -276,6 +271,7 @@ public class Simulation {
     }
 
     // Choose these requests, which are the best from the parking point of view - and assign parking spaces
+
     private static void chooseBestOffers(List<ParkingDto> parkings, List<UserDto> appUsers) {
         for (ParkingDto p : parkings) {
             int lotsAvailable = p.getFreeSpaces();
@@ -307,28 +303,6 @@ public class Simulation {
 
             p.setOffers(p.getOffers().subList(minFromLotsAndOffersNumbers,p.getOffers().size()));
         }
-    }
-
-    private static int checkIfOffersNumberMatch(List<ParkingDto> parkings) {
-        int offersNumber = 0;
-
-        for (ParkingDto parking : parkings) {
-            offersNumber += parking.getOffers().size();
-        }
-
-        return offersNumber;
-    }
-
-    private static int countSatisfiedUsers(List<UserDto> appUsers) {
-        int satisfied = 0;
-
-        for (UserDto user : appUsers) {
-            if (user.isHasReservedParkingSpot()) {
-                satisfied++;
-            }
-        }
-
-        return satisfied;
     }
 
     private static boolean isStopConditionMet(HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping,
@@ -372,5 +346,38 @@ public class Simulation {
         }
 
         return areUsersLookingForAParking;
+    }
+
+    private static void printIterationInformation(int algorithmIteration, List<UserDto> appUsers, List<ParkingDto> parkings) {
+        int validOffers;
+        int usersWithParkingLots;
+
+        validOffers = checkIfOffersNumberMatch(parkings);
+        usersWithParkingLots = countSatisfiedUsers(appUsers);
+        System.out.println("Iteration number: " + algorithmIteration);
+        System.out.println("Number of valid offers: " + validOffers);
+        System.out.println("Satisfied users number: " + usersWithParkingLots + "\n");
+    }
+
+    private static int checkIfOffersNumberMatch(List<ParkingDto> parkings) {
+        int offersNumber = 0;
+
+        for (ParkingDto parking : parkings) {
+            offersNumber += parking.getOffers().size();
+        }
+
+        return offersNumber;
+    }
+
+    private static int countSatisfiedUsers(List<UserDto> appUsers) {
+        int satisfied = 0;
+
+        for (UserDto user : appUsers) {
+            if (user.isHasReservedParkingSpot()) {
+                satisfied++;
+            }
+        }
+
+        return satisfied;
     }
 }
