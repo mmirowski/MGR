@@ -48,7 +48,12 @@ public final class Constants {
     public static final int TWENTY_SECONDS = 20000;
     public static final int SCALE_MODIFIER = 1000;
     public static final int CLOSE_DESTINATION_MODIFIER = 50;
-    public static final double BOUND = 2250.0;
-    public static final String PATH_TO_SURVEY_RESPONSES_FILE = "src/usersResponses.txt";
-    public static final String PATH_TO_TOWN_MAP_FILE = "src/townMap.txt";
+    public static final int UPPER_PARKING_SPOT_BOUND_EXCLUSIVE = 51;
+    public static final int CHOSEN_VALUATION_MECHANISM_ID = 1;
+
+    public static final double FREE_SPACES_COEFFICIENT = 0.2;
+    public static final double MAP_COORDINATES_BOUNDARY = 2250.0;
+    public static final String PATH_TO_SURVEY_RESPONSES_FILE = "src/files/usersResponses.txt";
+    public static final String PATH_TO_TOWN_MAP_FILE = "src/files/townMap.txt";
+    public static final String PATH_TO_PARKINGS_COORDINATES_FILE = "src/files/parkingsCoordinates.txt";
 }

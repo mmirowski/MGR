@@ -1,6 +1,7 @@
 import dtos.ParkingDto;
 import dtos.RequestDto;
 import dtos.UserDto;
+import dtos.ValuationMechanismDto;
 import utils.Constants;
 
 import java.io.BufferedReader;
@@ -26,11 +27,18 @@ public class Simulation {
         do {
             prepareSimulationRequests(appUsers, usersRequests, userRequestMapping);
             prepareClosestParkingsListForUser(usersRequests, parkings, requestClosestParkingsMapping);
+
+            int fs = 0;
+            for (ParkingDto p : parkings) {
+                fs += p.getFreeSpaces();
+            }
+            System.out.println("There are: " + fs + " free spaces in this iteration.");
+
             sendRequestsToParkings(requestClosestParkingsMapping, algorithmIteration);
             orderOffersFromBest(parkings);
             chooseBestOffers(parkings, appUsers);
 
-            printIterationInformation(algorithmIteration, appUsers, parkings);
+            int usersWithParkingLots = printIterationInformation(algorithmIteration, appUsers, parkings);
             algorithmIteration++;
 
             // Repeat process for those users, who did not get the parking space
@@ -68,8 +76,8 @@ public class Simulation {
                 "",
                 surveyID,
                 // Initial user coordinates are picked randomly within town map range
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.MAP_COORDINATES_BOUNDARY),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.MAP_COORDINATES_BOUNDARY),
                 // Funds are assumed to be available for each app user
                 ThreadLocalRandom.current().nextDouble(50.0, 100.0),
                 false,
@@ -105,19 +113,80 @@ public class Simulation {
     }
 
     private static ParkingDto configureParkingDto(List<String> parkingParameters, int parkingID, Date timeStamp) {
-        return new ParkingDto(
-                parkingID,
-                Double.parseDouble(parkingParameters.get(0)),
-                Double.parseDouble(parkingParameters.get(1)),
-                Integer.parseInt(parkingParameters.get(2)),
-                Integer.parseInt(parkingParameters.get(3)),
-                Double.parseDouble(parkingParameters.get(4)),
-                timeStamp,
-                Boolean.parseBoolean(parkingParameters.get(5)),
-                Boolean.parseBoolean(parkingParameters.get(6)),
-                Boolean.parseBoolean(parkingParameters.get(7)),
-                new ArrayList<>()
-        );
+        ValuationMechanismDto valuationMechanismDto = configureValuationMechanismDto(parkingParameters);
+
+        return ParkingDto.builder()
+                .id(parkingID)
+                .parkingXCoordinate(Double.parseDouble(parkingParameters.get(0)))
+                .parkingYCoordinate(Double.parseDouble(parkingParameters.get(1)))
+                .maxCapacity(valuationMechanismDto.getMaxCapacity())
+                .freeSpaces(valuationMechanismDto.getFreeSpaces())
+                .cost(getCostBasedOnValuationMechanism(Constants.CHOSEN_VALUATION_MECHANISM_ID, valuationMechanismDto))
+                .freeSpacesLastUpdate(timeStamp)
+                .isCovered(valuationMechanismDto.isCovered())
+                .isSecured(valuationMechanismDto.isSecured())
+                .isSpecial(valuationMechanismDto.isSpecial())
+                .offers(new ArrayList<>())
+                .build();
+    }
+
+    private static ValuationMechanismDto configureValuationMechanismDto(List<String> parkingParameters) {
+        int maxCapacity = getLinearRandomNumber(Constants.UPPER_PARKING_SPOT_BOUND_EXCLUSIVE);
+        int freeSpaces = (int) Math.floor(Constants.FREE_SPACES_COEFFICIENT * maxCapacity);
+        boolean isCovered = Boolean.parseBoolean(parkingParameters.get(5));
+        boolean isSecured = Boolean.parseBoolean(parkingParameters.get(6));
+        boolean isSpecial = Boolean.parseBoolean(parkingParameters.get(7));
+
+        return ValuationMechanismDto.builder()
+                .maxCapacity(maxCapacity)
+                .freeSpaces(freeSpaces)
+                .isCovered(isCovered)
+                .isSecured(isSecured)
+                .isSpecial(isSpecial)
+                .build();
+    }
+
+    public static int getLinearRandomNumber(int maxSize) {
+        // Get a linearly multiplied random number
+        int randomMultiplier = maxSize * (maxSize + 1) / 2;
+        Random r = new Random();
+        int randomInt = r.nextInt(randomMultiplier);
+
+        // Linearly iterate through the possible values to find the correct one
+        int linearRandomNumber = 0;
+        for (int i = maxSize; randomInt >= 0; i--) {
+            randomInt -= i;
+            linearRandomNumber++;
+        }
+
+        return linearRandomNumber;
+    }
+
+    private static double getCostBasedOnValuationMechanism(int chosenValuationMechanismId,
+                                                           ValuationMechanismDto VMDto) {
+
+        double basePrice = ThreadLocalRandom.current().nextDouble(0, 20);
+        double coveredCoefficient = VMDto.isCovered() ? ThreadLocalRandom.current().nextDouble(0, 5) : 0;
+        double securedCoefficient = VMDto.isSecured() ? ThreadLocalRandom.current().nextDouble(0, 10) : 0;
+        double specialCoefficient = VMDto.isSpecial() ? ThreadLocalRandom.current().nextDouble(0, 20) : 0;
+
+        double freeSpacesCoefficient = (VMDto.getMaxCapacity() / (double) VMDto.getFreeSpaces()) * 0.4;
+        double parkingCharacteristicsCoefficient = coveredCoefficient + securedCoefficient + specialCoefficient;
+
+        double finalPrice = basePrice;
+
+        switch (chosenValuationMechanismId) {
+            case 1:
+                break;
+            case 2:
+                finalPrice += freeSpacesCoefficient;
+                break;
+            case 3:
+                finalPrice += freeSpacesCoefficient + parkingCharacteristicsCoefficient;
+                break;
+        }
+
+        return finalPrice;
     }
 
     private static void prepareSimulationRequests(List<UserDto> appUsers, List<RequestDto> allUsersRequests,
@@ -135,8 +204,8 @@ public class Simulation {
         return new RequestDto(
                 user.getId(),
                 // Journey destination coordinates are picked randomly within town map range
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.BOUND),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.MAP_COORDINATES_BOUNDARY),
+                ThreadLocalRandom.current().nextDouble(0.0, Constants.MAP_COORDINATES_BOUNDARY),
                 user.getMaxDistanceFromDestination(),
                 user.getMaxCost(),
                 user.isNeedCoveredParking(),
@@ -348,7 +417,7 @@ public class Simulation {
         return areUsersLookingForAParking;
     }
 
-    private static void printIterationInformation(int algorithmIteration, List<UserDto> appUsers, List<ParkingDto> parkings) {
+    private static int printIterationInformation(int algorithmIteration, List<UserDto> appUsers, List<ParkingDto> parkings) {
         int validOffers;
         int usersWithParkingLots;
 
@@ -357,6 +426,7 @@ public class Simulation {
         System.out.println("Iteration number: " + algorithmIteration);
         System.out.println("Number of valid offers: " + validOffers);
         System.out.println("Satisfied users number: " + usersWithParkingLots + "\n");
+        return usersWithParkingLots;
     }
 
     private static int checkIfOffersNumberMatch(List<ParkingDto> parkings) {
