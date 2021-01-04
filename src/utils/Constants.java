@@ -48,7 +48,7 @@ public final class Constants {
     public static final String PATH_TO_TOWN_MAP_FILE = "src/files/townMap.txt";
 
     // Constants
-    public static final int FINAL_ITERATION = 5;
+    public static final int FINAL_ITERATION = 6;
     public static final int TWENTY_SECONDS = 20000;
     public static final int SCALE_MODIFIER = 1000;
     public static final double MAP_COORDINATES_BOUNDARY = 2250.0;

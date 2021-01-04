@@ -8,20 +8,36 @@ import java.util.*;
 
 public class Simulation {
     public static void main(String[] args) {
+        System.out.println("=== Multi-agent parking spot geolocalization system run simulation ===");
+        System.out.println("=== Valuation mechanism chosen: MW" + Constants.CHOSEN_VALUATION_MECHANISM_ID + " ===");
+        Date startDate = new Date();
+        System.out.println("=== Simulation initiation date: " + startDate + " ===");
+
+        for (int n = 1; n <1001; n++) {
+            System.out.println("* Simulation run number: " + n + " *");
+            runSimulation();
+        }
+
+        Date endDate = new Date();
+        System.out.println("=== Simulation end date: " + endDate + " ===");
+    }
+
+    private static void runSimulation() {
         int algorithmIteration = 0;
 
-        List<RequestDto> usersRequests = new ArrayList<>();
-
-        HashMap<UserDto, RequestDto> userRequestMapping = new HashMap<>();
-        HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping = new HashMap<>();
+        HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping;
 
         List<UserDto> appUsers = Methods.extractUsersDataFromSurveyResponses();
         List<ParkingDto> parkings = Methods.initializeParkingsData();
+        int allParkingSpaces = 0;
+        for (ParkingDto p : parkings) {
+            allParkingSpaces += p.getFreeSpaces();
+        }
 
         do {
-            Methods.printIterationInformation(algorithmIteration, appUsers, parkings);
-            prepareSimulationRequests(appUsers, usersRequests, userRequestMapping);
-            prepareClosestParkingsListForUser(usersRequests, parkings, requestClosestParkingsMapping);
+            Methods.printIterationInformation(algorithmIteration, appUsers, parkings, allParkingSpaces);
+            List<RequestDto> usersRequests = prepareSimulationRequests(appUsers);
+            requestClosestParkingsMapping = prepareClosestParkingsListForUser(usersRequests, parkings);
             sendRequestsToParkings(requestClosestParkingsMapping, algorithmIteration);
             orderOffersFromBest(parkings);
             chooseBestOffers(parkings, appUsers);
@@ -31,19 +47,24 @@ public class Simulation {
         } while (isStopConditionMet(requestClosestParkingsMapping, appUsers, algorithmIteration));
     }
 
-    private static void prepareSimulationRequests(List<UserDto> appUsers, List<RequestDto> allUsersRequests,
-                                                  HashMap<UserDto, RequestDto> userRequestMapping) {
+    private static List<RequestDto> prepareSimulationRequests(List<UserDto> appUsers) {
+        HashMap<UserDto, RequestDto> userRequestMapping = new HashMap<>();
+        List<RequestDto> usersRequests = new ArrayList<>();
+
         for (UserDto user : appUsers) {
             if (!user.isHasReservedParkingSpot()) {
                 RequestDto newRequest = Methods.configureRequestDto(user);
-                allUsersRequests.add(newRequest);
+                usersRequests.add(newRequest);
                 userRequestMapping.put(user, newRequest);
             }
         }
+
+        return usersRequests;
     }
 
-    private static void prepareClosestParkingsListForUser(List<RequestDto> usersRequests, List<ParkingDto> parkings,
-                                                          HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping) {
+    private static HashMap<RequestDto, List<ParkingDto>> prepareClosestParkingsListForUser(List<RequestDto> usersRequests, List<ParkingDto> parkings) {
+        HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping = new HashMap<>();
+
         for (RequestDto request : usersRequests) {
             if (!request.isDone()) {
                 List<ParkingDto> acceptableParkings = selectAcceptableParkings(request, parkings);
@@ -51,6 +72,8 @@ public class Simulation {
                 requestClosestParkingsMapping.put(request, sortedParkings);
             }
         }
+
+        return requestClosestParkingsMapping;
     }
 
     private static List<ParkingDto> selectAcceptableParkings(RequestDto request, List<ParkingDto> allParkings) {

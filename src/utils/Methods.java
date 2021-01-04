@@ -181,15 +181,18 @@ public class Methods {
     }
 
 
-    public static void printIterationInformation(int algorithmIteration, List<UserDto> appUsers, List<ParkingDto> parkings) {
+    public static void printIterationInformation(int algorithmIteration, List<UserDto> appUsers, List<ParkingDto> parkings, int allParkingSpaces) {
         int validOffers = checkIfOffersNumberMatch(parkings);
         int usersWithParkingLots = countSatisfiedUsers(appUsers);
         int freeParkingSpaces = countAllFreeParkingSpaces(parkings);
+        double happinessPercentage = countHappinnessPercentage(usersWithParkingLots, appUsers);
+        double takenParkingSpacesPercentage = countTakenParkingSpacesPercentage(usersWithParkingLots, allParkingSpaces);
 
         System.out.println("Iteration number: " + algorithmIteration);
         System.out.println("Iteration starts with: " + freeParkingSpaces + " free parking spaces.");
         System.out.println("Number of valid offers: " + validOffers);
-        System.out.println("Satisfied users number: " + usersWithParkingLots + "\n");
+        System.out.println("Reserved parking spaces percentage: " + takenParkingSpacesPercentage + "%");
+        System.out.println("Satisfied users number: " + usersWithParkingLots + " (" + happinessPercentage + "%)" + "\n");
     }
 
     // ToDo#k Check this method
@@ -211,7 +214,6 @@ public class Methods {
 
         return satisfied;
     }
-
     private static int countAllFreeParkingSpaces(List<ParkingDto> parkings) {
         int freeParkingSpaces = 0;
         for (ParkingDto p : parkings) {
@@ -219,5 +221,16 @@ public class Methods {
         }
 
         return freeParkingSpaces;
+    }
+
+    private static double countHappinnessPercentage(int usersWithParkingLots, List<UserDto> appUsers) {
+        int numberOfUsers = appUsers.size();
+        double percentage = (double) usersWithParkingLots / (double) numberOfUsers * 100;
+        return (double) Math.round(percentage * 100) / 100;
+    }
+
+    private static double countTakenParkingSpacesPercentage(int usersWithParkingLots, int freeParkingSpaces) {
+        double percentage = (double) usersWithParkingLots / (double) freeParkingSpaces * 100;
+        return  (double) Math.round(percentage * 100) / 100;
     }
 }
