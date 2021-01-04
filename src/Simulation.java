@@ -1,219 +1,45 @@
 import dtos.ParkingDto;
 import dtos.RequestDto;
 import dtos.UserDto;
-import dtos.ValuationMechanismDto;
 import utils.Constants;
+import utils.Methods;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulation {
     public static void main(String[] args) {
         int algorithmIteration = 0;
 
-        List<UserDto> appUsers = new ArrayList<>();
         List<RequestDto> usersRequests = new ArrayList<>();
-        List<ParkingDto> parkings = new ArrayList<>();
 
         HashMap<UserDto, RequestDto> userRequestMapping = new HashMap<>();
         HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping = new HashMap<>();
 
-        extractDataFromSurveyResponses(appUsers);
-        initializeParkingsData(parkings);
+        List<UserDto> appUsers = Methods.extractUsersDataFromSurveyResponses();
+        List<ParkingDto> parkings = Methods.initializeParkingsData();
 
         do {
+            Methods.printIterationInformation(algorithmIteration, appUsers, parkings);
             prepareSimulationRequests(appUsers, usersRequests, userRequestMapping);
             prepareClosestParkingsListForUser(usersRequests, parkings, requestClosestParkingsMapping);
-
-            int fs = 0;
-            for (ParkingDto p : parkings) {
-                fs += p.getFreeSpaces();
-            }
-            System.out.println("There are: " + fs + " free spaces in this iteration.");
-
             sendRequestsToParkings(requestClosestParkingsMapping, algorithmIteration);
             orderOffersFromBest(parkings);
             chooseBestOffers(parkings, appUsers);
 
-            int usersWithParkingLots = printIterationInformation(algorithmIteration, appUsers, parkings);
             algorithmIteration++;
-
             // Repeat process for those users, who did not get the parking space
         } while (isStopConditionMet(requestClosestParkingsMapping, appUsers, algorithmIteration));
-    }
-
-    private static void extractDataFromSurveyResponses(List<UserDto> appUsers) {
-        BufferedReader bufferedReader;
-        int surveyID = 1;
-
-        try {
-            FileReader fileReader = new FileReader(Constants.PATH_TO_SURVEY_RESPONSES_FILE);
-            bufferedReader = new BufferedReader(fileReader);
-            String line = bufferedReader.readLine();
-
-            while (line != null) {
-                List<String> userParameters = Arrays.asList(line.split(" "));
-                UserDto newUser = configureUserDto(userParameters, surveyID);
-                appUsers.add(newUser);
-                line = bufferedReader.readLine();
-                surveyID++;
-            }
-
-            Collections.shuffle(appUsers);
-
-        } catch (IOException e) {
-            System.out.println("An error occurred while reading lines from the usersResponses.txt file.");
-            e.printStackTrace();
-        }
-    }
-
-    private static UserDto configureUserDto(List<String> userParameters, int surveyID) {
-        return new UserDto(
-                // Name parameter is negligible from the programming point of view
-                "",
-                surveyID,
-                // Initial user coordinates are picked randomly within town map range
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.MAP_COORDINATES_BOUNDARY),
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.MAP_COORDINATES_BOUNDARY),
-                // Funds are assumed to be available for each app user
-                ThreadLocalRandom.current().nextDouble(50.0, 100.0),
-                false,
-                Double.parseDouble(userParameters.get(0)) * Constants.SCALE_MODIFIER,
-                Double.parseDouble(userParameters.get(1)),
-                Boolean.parseBoolean(userParameters.get(2)),
-                Boolean.parseBoolean(userParameters.get(3)),
-                Boolean.parseBoolean(userParameters.get(4)),
-                Boolean.parseBoolean(userParameters.get(5)));
-    }
-
-    private static void initializeParkingsData(List<ParkingDto> parkings) {
-        BufferedReader bufferedReader;
-        int parkingID = 1;
-
-        try {
-            FileReader fileReader = new FileReader(Constants.PATH_TO_TOWN_MAP_FILE);
-            bufferedReader = new BufferedReader(fileReader);
-            String line = bufferedReader.readLine();
-
-            while (line != null) {
-                List<String> parkingParameters = Arrays.asList(line.split(" "));
-                ParkingDto newParking = configureParkingDto(parkingParameters, parkingID, new Date());
-                parkings.add(newParking);
-                line = bufferedReader.readLine();
-                parkingID++;
-            }
-
-        } catch (IOException e) {
-            System.out.println("An error occurred while reading lines from the townMap.txt file.");
-            e.printStackTrace();
-        }
-    }
-
-    private static ParkingDto configureParkingDto(List<String> parkingParameters, int parkingID, Date timeStamp) {
-        ValuationMechanismDto valuationMechanismDto = configureValuationMechanismDto(parkingParameters);
-
-        return ParkingDto.builder()
-                .id(parkingID)
-                .parkingXCoordinate(Double.parseDouble(parkingParameters.get(0)))
-                .parkingYCoordinate(Double.parseDouble(parkingParameters.get(1)))
-                .maxCapacity(valuationMechanismDto.getMaxCapacity())
-                .freeSpaces(valuationMechanismDto.getFreeSpaces())
-                .cost(getCostBasedOnValuationMechanism(Constants.CHOSEN_VALUATION_MECHANISM_ID, valuationMechanismDto))
-                .freeSpacesLastUpdate(timeStamp)
-                .isCovered(valuationMechanismDto.isCovered())
-                .isSecured(valuationMechanismDto.isSecured())
-                .isSpecial(valuationMechanismDto.isSpecial())
-                .offers(new ArrayList<>())
-                .build();
-    }
-
-    private static ValuationMechanismDto configureValuationMechanismDto(List<String> parkingParameters) {
-        int maxCapacity = getLinearRandomNumber(Constants.UPPER_PARKING_SPOT_BOUND_EXCLUSIVE);
-        int freeSpaces = (int) Math.floor(Constants.FREE_SPACES_COEFFICIENT * maxCapacity);
-        boolean isCovered = Boolean.parseBoolean(parkingParameters.get(5));
-        boolean isSecured = Boolean.parseBoolean(parkingParameters.get(6));
-        boolean isSpecial = Boolean.parseBoolean(parkingParameters.get(7));
-
-        return ValuationMechanismDto.builder()
-                .maxCapacity(maxCapacity)
-                .freeSpaces(freeSpaces)
-                .isCovered(isCovered)
-                .isSecured(isSecured)
-                .isSpecial(isSpecial)
-                .build();
-    }
-
-    public static int getLinearRandomNumber(int maxSize) {
-        // Get a linearly multiplied random number
-        int randomMultiplier = maxSize * (maxSize + 1) / 2;
-        Random r = new Random();
-        int randomInt = r.nextInt(randomMultiplier);
-
-        // Linearly iterate through the possible values to find the correct one
-        int linearRandomNumber = 0;
-        for (int i = maxSize; randomInt >= 0; i--) {
-            randomInt -= i;
-            linearRandomNumber++;
-        }
-
-        return linearRandomNumber;
-    }
-
-    private static double getCostBasedOnValuationMechanism(int chosenValuationMechanismId,
-                                                           ValuationMechanismDto VMDto) {
-
-        double basePrice = ThreadLocalRandom.current().nextDouble(0, 20);
-        double coveredCoefficient = VMDto.isCovered() ? ThreadLocalRandom.current().nextDouble(0, 5) : 0;
-        double securedCoefficient = VMDto.isSecured() ? ThreadLocalRandom.current().nextDouble(0, 10) : 0;
-        double specialCoefficient = VMDto.isSpecial() ? ThreadLocalRandom.current().nextDouble(0, 20) : 0;
-
-        double freeSpacesCoefficient = (VMDto.getMaxCapacity() / (double) VMDto.getFreeSpaces()) * 0.4;
-        double parkingCharacteristicsCoefficient = coveredCoefficient + securedCoefficient + specialCoefficient;
-
-        double finalPrice = basePrice;
-
-        switch (chosenValuationMechanismId) {
-            case 1:
-                break;
-            case 2:
-                finalPrice += freeSpacesCoefficient;
-                break;
-            case 3:
-                finalPrice += freeSpacesCoefficient + parkingCharacteristicsCoefficient;
-                break;
-        }
-
-        return finalPrice;
     }
 
     private static void prepareSimulationRequests(List<UserDto> appUsers, List<RequestDto> allUsersRequests,
                                                   HashMap<UserDto, RequestDto> userRequestMapping) {
         for (UserDto user : appUsers) {
             if (!user.isHasReservedParkingSpot()) {
-                RequestDto newRequest = configureRequestDto(user);
+                RequestDto newRequest = Methods.configureRequestDto(user);
                 allUsersRequests.add(newRequest);
                 userRequestMapping.put(user, newRequest);
             }
         }
-    }
-
-    private static RequestDto configureRequestDto(UserDto user) {
-        return new RequestDto(
-                user.getId(),
-                // Journey destination coordinates are picked randomly within town map range
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.MAP_COORDINATES_BOUNDARY),
-                ThreadLocalRandom.current().nextDouble(0.0, Constants.MAP_COORDINATES_BOUNDARY),
-                user.getMaxDistanceFromDestination(),
-                user.getMaxCost(),
-                user.isNeedCoveredParking(),
-                user.isNeedSecuredParking(),
-                user.isNeedSpecialParking(),
-                user.isWillingToPayExtra(),
-                false
-        );
     }
 
     private static void prepareClosestParkingsListForUser(List<RequestDto> usersRequests, List<ParkingDto> parkings,
@@ -370,7 +196,7 @@ public class Simulation {
                 }
             }
 
-            p.setOffers(p.getOffers().subList(minFromLotsAndOffersNumbers,p.getOffers().size()));
+            p.setOffers(p.getOffers().subList(minFromLotsAndOffersNumbers, p.getOffers().size()));
         }
     }
 
@@ -417,37 +243,4 @@ public class Simulation {
         return areUsersLookingForAParking;
     }
 
-    private static int printIterationInformation(int algorithmIteration, List<UserDto> appUsers, List<ParkingDto> parkings) {
-        int validOffers;
-        int usersWithParkingLots;
-
-        validOffers = checkIfOffersNumberMatch(parkings);
-        usersWithParkingLots = countSatisfiedUsers(appUsers);
-        System.out.println("Iteration number: " + algorithmIteration);
-        System.out.println("Number of valid offers: " + validOffers);
-        System.out.println("Satisfied users number: " + usersWithParkingLots + "\n");
-        return usersWithParkingLots;
-    }
-
-    private static int checkIfOffersNumberMatch(List<ParkingDto> parkings) {
-        int offersNumber = 0;
-
-        for (ParkingDto parking : parkings) {
-            offersNumber += parking.getOffers().size();
-        }
-
-        return offersNumber;
-    }
-
-    private static int countSatisfiedUsers(List<UserDto> appUsers) {
-        int satisfied = 0;
-
-        for (UserDto user : appUsers) {
-            if (user.isHasReservedParkingSpot()) {
-                satisfied++;
-            }
-        }
-
-        return satisfied;
-    }
 }

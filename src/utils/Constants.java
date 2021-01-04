@@ -44,16 +44,31 @@ public final class Constants {
     public static final String CALL_FOR_AN_AUCTION = "Call for an auction";
     public static final String CALL_FOR_FINAL_DECISION = "Call for final decision: accept or deny parking space reservation";
 
+    public static final String PATH_TO_SURVEY_RESPONSES_FILE = "src/files/usersResponses.txt";
+    public static final String PATH_TO_TOWN_MAP_FILE = "src/files/townMap.txt";
+
+    // Constants
     public static final int FINAL_ITERATION = 5;
     public static final int TWENTY_SECONDS = 20000;
     public static final int SCALE_MODIFIER = 1000;
-    public static final int CLOSE_DESTINATION_MODIFIER = 50;
-    public static final int UPPER_PARKING_SPOT_BOUND_EXCLUSIVE = 51;
-    public static final int CHOSEN_VALUATION_MECHANISM_ID = 1;
-
-    public static final double FREE_SPACES_COEFFICIENT = 0.2;
     public static final double MAP_COORDINATES_BOUNDARY = 2250.0;
-    public static final String PATH_TO_SURVEY_RESPONSES_FILE = "src/files/usersResponses.txt";
-    public static final String PATH_TO_TOWN_MAP_FILE = "src/files/townMap.txt";
-    public static final String PATH_TO_PARKINGS_COORDINATES_FILE = "src/files/parkingsCoordinates.txt";
+
+    // Parameters
+    // Modify these to impact simulation
+    public static final int CHOSEN_VALUATION_MECHANISM_ID = 1;
+    public static final int CLOSE_DESTINATION_MODIFIER = 50;
+
+    public static final double FREE_SPACES_NUMBER_COEFFICIENT = 0.05;
+    public static final int PARKING_SPOT_BOUND_EXCLUSIVE = 51;
+    public static final double USER_FUNDS_LOWER_BOUND = 10;
+    public static final double USER_FUNDS_UPPER_BOUND = 100;
+    public static final double LOWER_BASE_PRICE_LIMIT = 0;
+    public static final double UPPER_BASE_PRICE_LIMIT = 20;
+    public static final double LOWER_COVERED_PRICE_LIMIT = 1;
+    public static final double UPPER_COVERED_PRICE_LIMIT = 4;
+    public static final double LOWER_SECURED_PRICE_LIMIT = 3;
+    public static final double UPPER_SECURED_PRICE_LIMIT = 8;
+    public static final double LOWER_SPECIAL_PRICE_LIMIT = 8;
+    public static final double UPPER_SPECIAL_PRICE_LIMIT = 15;
+    public static final double FREE_SPACES_PRICE_COEFFICIENT = 0.4;
 }
