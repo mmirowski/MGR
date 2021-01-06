@@ -17,20 +17,24 @@ public class Simulation {
             gatheredData.add(runSimulation());
         }
 
+        System.out.println("=== Conclusions ===");
+        System.out.println("=== Statistical analysis of simulation ===");
         Methods.runStatisticalAnalysis(gatheredData);
         Date endDate = new Date();
         System.out.println("=== Simulation end date: " + endDate + " ===");
     }
 
     private static IterationInformationDto runSimulation() {
-        int algorithmIteration = 0;
-
-        HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping;
         IterationInformationDto iiDto;
+        int algorithmIteration = 0;
+        int allParkingSpaces = 0;
+
+        List<IterationInformationDto> singleSimulationData = new ArrayList<>();
+        HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping;
         List<UserDto> appUsers = Methods.extractUsersDataFromSurveyResponses();
         List<ParkingDto> parkings = Methods.initializeParkingsData();
         HashMap<UserDto, ParkingDto> satisfiedUsers = new HashMap<>();
-        int allParkingSpaces = 0;
+
         for (ParkingDto p : parkings) {
             allParkingSpaces += p.getFreeSpaces();
         }
@@ -48,11 +52,14 @@ public class Simulation {
             double exactlyMetRequirementsPercentage = Methods.calculateExactlyMetRequirementsPercentage(satisfiedUsers);
             iiDto.setAverageParkingSpacePrice(averageParkingSpacePrice);
             iiDto.setExactlyMetRequirementsPercentage(exactlyMetRequirementsPercentage);
+            singleSimulationData.add(iiDto);
 
             algorithmIteration++;
             // Repeat process for those users, who did not get the parking space
         } while (isStopConditionMet(requestClosestParkingsMapping, appUsers, algorithmIteration));
 
+        System.out.println("Simulation single run statistical overview");
+        Methods.runStatisticalAnalysis(singleSimulationData);
         return iiDto;
     }
 

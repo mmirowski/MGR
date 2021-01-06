@@ -315,15 +315,85 @@ public class Methods {
             emrp.add(iiDto.getExactlyMetRequirementsPercentage());
         }
 
+        Collections.sort(sup);
+        Collections.sort(rpsp);
+        Collections.sort(apsp);
+        Collections.sort(emrp);
+
         double supA = sup.stream().mapToDouble(val -> val).average().orElse(0.0);
         double rpspA = rpsp.stream().mapToDouble(val -> val).average().orElse(0.0);
         double apspA = apsp.stream().mapToDouble(val -> val).average().orElse(0.0);
         double emrpA = emrp.stream().mapToDouble(val -> val).average().orElse(0.0);
 
-        System.out.println("=== Statistical analysis of simulation ===");
+        System.out.println("Minimal values of parameters: satisfiedUsersPercentage: " + Math.round(Collections.min(sup) * 100) / 100.0 +
+                " , reservedParkingSpacesPercentage: " + Math.round(Collections.min(rpsp) * 100) / 100.0 +
+                " , averageParkingSpacePrice: " + Math.round(Collections.min(apsp) * 100) / 100.0 +
+                " , exactlyMetRequirementsPercentage: " + Math.round(Collections.min(emrp) * 100) / 100.0);
+
+        System.out.println("Maximal values of parameters: satisfiedUsersPercentage: " + Math.round(Collections.max(sup) * 100) / 100.0 +
+                " , reservedParkingSpacesPercentage: " + Math.round(Collections.max(rpsp) * 100) / 100.0 +
+                " , averageParkingSpacePrice: " + Math.round(Collections.max(apsp) * 100) / 100.0 +
+                " , exactlyMetRequirementsPercentage: " + Math.round(Collections.max(emrp) * 100) / 100.0);
+
+        System.out.println("Median values of parameters: satisfiedUsersPercentage: " + Math.round(median(sup) * 100) / 100.0 +
+                " , reservedParkingSpacesPercentage: " + Math.round(median(rpsp) * 100) / 100.0 +
+                " , averageParkingSpacePrice: " + Math.round(median(apsp) * 100) / 100.0 +
+                " , exactlyMetRequirementsPercentage: " + Math.round(median(emrp) * 100) / 100.0);
+
+        System.out.println("Variation values of parameters: satisfiedUsersPercentage: " + Math.round(sd(sup)*sd(sup) * 100) / 100.0 +
+                " , reservedParkingSpacesPercentage: " + Math.round(sd(rpsp)*sd(rpsp) * 100) / 100.0 +
+                " , averageParkingSpacePrice: " + Math.round(sd(apsp)*sd(apsp) * 100) / 100.0 +
+                " , exactlyMetRequirementsPercentage: " + Math.round(sd(emrp)*sd(emrp) * 100) / 100.0);
+
+        System.out.println("Standard deviation values of parameters: satisfiedUsersPercentage: " + Math.round(sd(sup) * 100) / 100.0 +
+                " , reservedParkingSpacesPercentage: " + Math.round(sd(rpsp) * 100) / 100.0 +
+                " , averageParkingSpacePrice: " + Math.round(sd(apsp) * 100) / 100.0 +
+                " , exactlyMetRequirementsPercentage: " + Math.round(sd(emrp) * 100) / 100.0);
+
         System.out.println("Average satisfied Users percentage: " + Math.round(supA * 100) / 100.0  + "%");
         System.out.println("Average reserved parking spaces percentage: " + Math.round(rpspA * 100) / 100.0 + "%");
         System.out.println("Average parking space price: " + Math.round(apspA * 100) / 100.0 + " PLN");
         System.out.println("Exactly met requirement coefficient: " + Math.round(emrpA * 100) / 100.0 + "%\n");
     }
+
+    public static double sum(List<Double> a) {
+        if (a.size() > 0) {
+            int sum = 0;
+
+            for (Double i : a) {
+                sum += i;
+            }
+
+            return sum;
+        }
+
+        return 0;
+    }
+
+    public static double mean(List<Double> a) {
+        double sum = sum(a);
+        double mean = 0;
+        mean = sum / (a.size() * 1.0);
+        return mean;
+    }
+
+    public static double median(List<Double> a) {
+        int middle = a.size() / 2;
+
+        if (a.size() % 2 == 1) {
+            return a.get(middle);
+        } else {
+            return (a.get(middle - 1) + a.get(middle)) / 2.0;
+        }
+    }
+
+    public static double sd(List<Double> a) {
+        int sum = 0;
+        double mean = mean(a);
+
+        for (Double i : a)
+            sum += Math.pow((i - mean), 2);
+        return Math.sqrt(sum / (a.size() - 1.0)); // sample
+    }
+
 }
