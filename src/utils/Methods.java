@@ -1,9 +1,6 @@
 package utils;
 
-import dtos.ParkingDto;
-import dtos.RequestDto;
-import dtos.UserDto;
-import dtos.ValuationMechanismDto;
+import dtos.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,6 +9,28 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Methods {
+    public static void printPreamble() {
+        System.out.println("=== Multi-agent parking spot geolocalization system run simulation ===");
+        System.out.println("=== Valuation mechanism chosen: MW" + Constants.CHOSEN_VALUATION_MECHANISM_ID + " ===");
+        Date startDate = new Date();
+        System.out.println("=== Simulation initiation date: " + startDate + " ===\n");
+        System.out.println("=== Parameters values used during the simulation ===\n");
+        System.out.println("Close destination coefficient: " + Constants.CLOSE_DESTINATION_MODIFIER);
+        System.out.println("Free parking spaces coefficient: " + Constants.FREE_SPACES_NUMBER_COEFFICIENT);
+        System.out.println("Highest maximum capacity of a single parking: " + Constants.PARKING_SPOT_BOUND_EXCLUSIVE);
+        System.out.println("User funds lower bound: " + Constants.USER_FUNDS_LOWER_BOUND);
+        System.out.println("User funds higher bound: " + Constants.USER_FUNDS_UPPER_BOUND);
+        System.out.println("Lower base parking price limit: " + Constants.LOWER_BASE_PRICE_LIMIT);
+        System.out.println("Upper base parking price limit: " + Constants.UPPER_BASE_PRICE_LIMIT);
+        System.out.println("Lower covered price limit: " + Constants.LOWER_COVERED_PRICE_LIMIT);
+        System.out.println("Upper covered price limit: " + Constants.UPPER_COVERED_PRICE_LIMIT);
+        System.out.println("Lower secured price limit: " + Constants.LOWER_SECURED_PRICE_LIMIT);
+        System.out.println("Upper secured price limit: " + Constants.UPPER_SECURED_PRICE_LIMIT);
+        System.out.println("Lower special price limit: " + Constants.LOWER_SPECIAL_PRICE_LIMIT);
+        System.out.println("Upper special price limit: " + Constants.UPPER_SPECIAL_PRICE_LIMIT);
+        System.out.println("Inverse free spaces price coefficient: " + Constants.FREE_SPACES_PRICE_COEFFICIENT + "\n");
+    }
+
     public static List<UserDto> extractUsersDataFromSurveyResponses() {
         List<UserDto> appUsers = new ArrayList<>();
         int surveyID = 1;
@@ -154,10 +173,10 @@ public class Methods {
             case 1:
                 break;
             case 2:
-                finalPrice += freeSpacesCoefficient;
+                finalPrice = freeSpacesCoefficient;
                 break;
             case 3:
-                finalPrice += freeSpacesCoefficient + parkingCharacteristicsCoefficient;
+                finalPrice = freeSpacesCoefficient + parkingCharacteristicsCoefficient;
                 break;
         }
 
@@ -180,22 +199,24 @@ public class Methods {
         );
     }
 
+    public static IterationInformationDto printAndSaveIterationInformation(IterationInformationDto iiDto) {
+        int validOffers = checkIfOffersNumberMatch(iiDto.getParkings());
+        int usersWithParkingLots = countSatisfiedUsers(iiDto.getAppUsers());
+        int freeParkingSpaces = countAllFreeParkingSpaces(iiDto.getParkings());
+        double happinessPercentage = countHappinnessPercentage(usersWithParkingLots, iiDto.getAppUsers());
+        double takenParkingSpacesPercentage = countTakenParkingSpacesPercentage(usersWithParkingLots, iiDto.getAllParkingSpaces());
 
-    public static void printIterationInformation(int algorithmIteration, List<UserDto> appUsers, List<ParkingDto> parkings, int allParkingSpaces) {
-        int validOffers = checkIfOffersNumberMatch(parkings);
-        int usersWithParkingLots = countSatisfiedUsers(appUsers);
-        int freeParkingSpaces = countAllFreeParkingSpaces(parkings);
-        double happinessPercentage = countHappinnessPercentage(usersWithParkingLots, appUsers);
-        double takenParkingSpacesPercentage = countTakenParkingSpacesPercentage(usersWithParkingLots, allParkingSpaces);
-
-        System.out.println("Iteration number: " + algorithmIteration);
+        System.out.println("Iteration number: " + iiDto.getAlgorithmIteration());
         System.out.println("Iteration starts with: " + freeParkingSpaces + " free parking spaces.");
         System.out.println("Number of valid offers: " + validOffers);
         System.out.println("Reserved parking spaces percentage: " + takenParkingSpacesPercentage + "%");
         System.out.println("Satisfied users number: " + usersWithParkingLots + " (" + happinessPercentage + "%)" + "\n");
+
+        iiDto.setSatisfiedUsersPercentage(happinessPercentage);
+        iiDto.setReservedParkingSpacesPercentage(takenParkingSpacesPercentage);
+        return iiDto;
     }
 
-    // ToDo#k Check this method
     private static int checkIfOffersNumberMatch(List<ParkingDto> parkings) {
         int offersNumber = 0;
         for (ParkingDto parking : parkings) {
@@ -232,5 +253,77 @@ public class Methods {
     private static double countTakenParkingSpacesPercentage(int usersWithParkingLots, int freeParkingSpaces) {
         double percentage = (double) usersWithParkingLots / (double) freeParkingSpaces * 100;
         return  (double) Math.round(percentage * 100) / 100;
+    }
+
+    public static IterationInformationDto configureIterationInformationDto(int algorithmIteration,
+                                                                           List<UserDto> appUsers,
+                                                                           List<ParkingDto> parkings,
+                                                                           int allParkingSpaces) {
+        return IterationInformationDto.builder()
+                .algorithmIteration(algorithmIteration)
+                .appUsers(appUsers)
+                .parkings(parkings)
+                .allParkingSpaces(allParkingSpaces)
+                .build();
+    }
+
+    public static double calculateAverageParkingSpacePrice(HashMap<UserDto, ParkingDto> satisfiedUsers) {
+        double averagePrice;
+        double fullCost = 0;
+        int numberOfReservedLots = 0;
+
+        for (ParkingDto reservedParking : satisfiedUsers.values()) {
+            fullCost += reservedParking.getCost();
+            numberOfReservedLots++;
+        }
+
+        averagePrice = fullCost / (double) numberOfReservedLots;
+
+        return Math.round(averagePrice);
+    }
+
+    public static double calculateExactlyMetRequirementsPercentage(HashMap<UserDto, ParkingDto> satisfiedUsers) {
+        int index = 0;
+        int satisfiedUsersCoefficient = 0;
+
+        for (Map.Entry<UserDto, ParkingDto> entry : satisfiedUsers.entrySet()) {
+            UserDto user = entry.getKey();
+            ParkingDto parking = entry.getValue();
+
+            int covReq = user.isNeedCoveredParking() == parking.isCovered() ? 1 : 0;
+            int secReq = user.isNeedSecuredParking() == parking.isSecured() ? 1 : 0;
+            int speReq = user.isNeedSpecialParking() == parking.isSpecial() ? 1 : 0;
+
+            index += covReq + secReq +speReq;
+            satisfiedUsersCoefficient += 3;
+        }
+
+        double percentage = (double) index / (double) satisfiedUsersCoefficient * 100;
+        return Math.round(percentage * 100) / 100.0;
+    }
+
+    public static void runStatisticalAnalysis(List<IterationInformationDto> gatheredData) {
+        List<Double> sup = new ArrayList<>();
+        List<Double> rpsp = new ArrayList<>();
+        List<Double> apsp = new ArrayList<>();
+        List<Double> emrp = new ArrayList<>();
+
+        for (IterationInformationDto iiDto : gatheredData) {
+            sup.add(iiDto.getSatisfiedUsersPercentage());
+            rpsp.add(iiDto.getReservedParkingSpacesPercentage());
+            apsp.add(iiDto.getAverageParkingSpacePrice());
+            emrp.add(iiDto.getExactlyMetRequirementsPercentage());
+        }
+
+        double supA = sup.stream().mapToDouble(val -> val).average().orElse(0.0);
+        double rpspA = rpsp.stream().mapToDouble(val -> val).average().orElse(0.0);
+        double apspA = apsp.stream().mapToDouble(val -> val).average().orElse(0.0);
+        double emrpA = emrp.stream().mapToDouble(val -> val).average().orElse(0.0);
+
+        System.out.println("=== Statistical analysis of simulation ===");
+        System.out.println("Average satisfied Users percentage: " + Math.round(supA * 100) / 100.0  + "%");
+        System.out.println("Average reserved parking spaces percentage: " + Math.round(rpspA * 100) / 100.0 + "%");
+        System.out.println("Average parking space price: " + Math.round(apspA * 100) / 100.0 + " PLN");
+        System.out.println("Exactly met requirement coefficient: " + Math.round(emrpA * 100) / 100.0 + "%\n");
     }
 }

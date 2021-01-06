@@ -1,3 +1,4 @@
+import dtos.IterationInformationDto;
 import dtos.ParkingDto;
 import dtos.RequestDto;
 import dtos.UserDto;
@@ -8,43 +9,51 @@ import java.util.*;
 
 public class Simulation {
     public static void main(String[] args) {
-        System.out.println("=== Multi-agent parking spot geolocalization system run simulation ===");
-        System.out.println("=== Valuation mechanism chosen: MW" + Constants.CHOSEN_VALUATION_MECHANISM_ID + " ===");
-        Date startDate = new Date();
-        System.out.println("=== Simulation initiation date: " + startDate + " ===");
+        List<IterationInformationDto> gatheredData = new ArrayList<>();
+        Methods.printPreamble();
 
-        for (int n = 1; n <1001; n++) {
+        for (int n = 1; n < 1001; n++) {
             System.out.println("* Simulation run number: " + n + " *");
-            runSimulation();
+            gatheredData.add(runSimulation());
         }
 
+        Methods.runStatisticalAnalysis(gatheredData);
         Date endDate = new Date();
         System.out.println("=== Simulation end date: " + endDate + " ===");
     }
 
-    private static void runSimulation() {
+    private static IterationInformationDto runSimulation() {
         int algorithmIteration = 0;
 
         HashMap<RequestDto, List<ParkingDto>> requestClosestParkingsMapping;
-
+        IterationInformationDto iiDto;
         List<UserDto> appUsers = Methods.extractUsersDataFromSurveyResponses();
         List<ParkingDto> parkings = Methods.initializeParkingsData();
+        HashMap<UserDto, ParkingDto> satisfiedUsers = new HashMap<>();
         int allParkingSpaces = 0;
         for (ParkingDto p : parkings) {
             allParkingSpaces += p.getFreeSpaces();
         }
 
         do {
-            Methods.printIterationInformation(algorithmIteration, appUsers, parkings, allParkingSpaces);
+            iiDto = Methods.configureIterationInformationDto(algorithmIteration, appUsers, parkings, allParkingSpaces);
+            Methods.printAndSaveIterationInformation(iiDto);
             List<RequestDto> usersRequests = prepareSimulationRequests(appUsers);
             requestClosestParkingsMapping = prepareClosestParkingsListForUser(usersRequests, parkings);
             sendRequestsToParkings(requestClosestParkingsMapping, algorithmIteration);
             orderOffersFromBest(parkings);
-            chooseBestOffers(parkings, appUsers);
+            chooseBestOffers(parkings, appUsers, satisfiedUsers);
+
+            double averageParkingSpacePrice = Methods.calculateAverageParkingSpacePrice(satisfiedUsers);
+            double exactlyMetRequirementsPercentage = Methods.calculateExactlyMetRequirementsPercentage(satisfiedUsers);
+            iiDto.setAverageParkingSpacePrice(averageParkingSpacePrice);
+            iiDto.setExactlyMetRequirementsPercentage(exactlyMetRequirementsPercentage);
 
             algorithmIteration++;
             // Repeat process for those users, who did not get the parking space
         } while (isStopConditionMet(requestClosestParkingsMapping, appUsers, algorithmIteration));
+
+        return iiDto;
     }
 
     private static List<RequestDto> prepareSimulationRequests(List<UserDto> appUsers) {
@@ -190,7 +199,8 @@ public class Simulation {
 
     // Choose these requests, which are the best from the parking point of view - and assign parking spaces
 
-    private static void chooseBestOffers(List<ParkingDto> parkings, List<UserDto> appUsers) {
+    private static void chooseBestOffers(List<ParkingDto> parkings, List<UserDto> appUsers,
+                                         HashMap<UserDto, ParkingDto> satisfiedUsers) {
         for (ParkingDto p : parkings) {
             int lotsAvailable = p.getFreeSpaces();
             int minFromLotsAndOffersNumbers = Math.min(lotsAvailable, p.getOffers().size());
@@ -216,6 +226,7 @@ public class Simulation {
                     p.setFreeSpacesLastUpdate(new Date());
                     user.setHasReservedParkingSpot(true);
                     request.setDone(true);
+                    satisfiedUsers.put(user, p);
                 }
             }
 

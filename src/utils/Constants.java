@@ -56,7 +56,7 @@ public final class Constants {
     // Parameters
     // Modify these to impact simulation
     public static final int CHOSEN_VALUATION_MECHANISM_ID = 1;
-    public static final int CLOSE_DESTINATION_MODIFIER = 50;
+    public static final int CLOSE_DESTINATION_MODIFIER = 80;
 
     public static final double FREE_SPACES_NUMBER_COEFFICIENT = 0.05;
     public static final int PARKING_SPOT_BOUND_EXCLUSIVE = 51;
